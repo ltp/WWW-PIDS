@@ -34,7 +34,7 @@ my $service = SOAP::Lite->endpoint('http://ws.tramtracker.com.au/pidsservice/pid
 			->on_action(sub{'http://www.yarratrams.com.au/pidsservice/GetDestinationsForAllRoutes'})
 			#->on_action(sub{'http://www.yarratrams.com.au/pidsservice/GetNewClientGuid'})
 			#->GetMainRoutes()
-			->GetDestinationsForAllRoutes($elem, $pids_header)
+			->GetDestinationsForAllRoutes( $pids_header)
 			#->GetMainRoutes($elem, $pids_header)
 			->result;
 			#->on_action('http://www.yarratrams.com.au/pidsservice/GetMainRoutes');

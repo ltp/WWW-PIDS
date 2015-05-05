@@ -4,14 +4,88 @@ use strict;
 use warnings;
 
 use SOAP::Lite;
+use Data::Dumper;
 
-our $VERSION = '0.01';
+our $VERSION	= '0.01';
+our %ATTR	= (
+			ClientGuid		=> undef,
+			ClientType		=> 'WEBPID',
+			ClientVersion		=> '1.0.0',
+			ClientWebServiceVersion	=> '6.4.0.0',
+		);
 
+our $ENDPOINT	= 'http://ws.tramtracker.com.au/pidsservice/pids.asmx';
+our $NS		= 'http://www.yarratrams.com.au/pidsservice/';
+our $PROXY	= 'http://ws.tramtracker.com.au/pidsservice/pids.asmx';
 
+our %METHODS = (
+	GetDestinationsForAllRoutes => {
+		parameters	=> [],
+		result		=> sub { my $r = shift; my $ref = ref( $r ); print "ref is a $ref\n"  }
+	}
+);
 
-sub new {	
+for my $method ( keys %METHODS ) {
+	{
+	no strict 'refs';
+
+	*$method = sub {
+		my $self = shift;
+
+		my $r = SOAP::Lite->endpoint( $ENDPOINT )
+				  ->ns( $NS )
+				  ->proxy( $PROXY )
+				  ->on_action( sub { "$NS$method" } )
+				  ->$method( $self->{pids_header} )
+				  ->result;
+
+		my @r = $METHODS{ $method }{ 'result' }->(\$r);
+		#my @r = @{ $r->{'diffgram'}->{'DocumentElement'}->{'ListOfDestinationsForAllRoutes'} };
+		return @r
+	};
+
+	}
 }
 
+sub new {
+	my ( $class, %args ) = @_;
+	my $self = bless {}, $class;
+
+	for my $a ( keys %ATTR ) {
+		defined $args{ $a }
+			? $self->{ $a } = $args{ $a }
+			: $self->{ $a } = $ATTR{ $a } ;
+	}
+
+	defined $self->{ 'ClientGuid' } or $self->{ 'ClientGuid' } = $self->get_new_client_guid();
+	$ATTR{ 'ClientGuid' } = $self->{ 'ClientGuid' };
+
+	$self->{pids_header} = SOAP::Header->name( 'PidsClientHeader' )
+					   ->attr( { 'xmlns' => $NS } )
+					   ->value( \SOAP::Header->value( 
+							SOAP::Header->name( 'ClientGuid'		=> $ATTR{ 'ClientGuid' } ),
+							SOAP::Header->name( 'ClientType'		=> $ATTR{ 'ClientType' } ),
+							SOAP::Header->name( 'ClientVersion'		=> $ATTR{ 'ClientVersion' } ),
+							SOAP::Header->name( 'ClientWebServiceVersion'	=> $ATTR{ 'ClientWebServiceVersion' } )
+						) );
+	
+	return $self
+}
+
+sub __header {
+	my $self
+}
+
+sub get_new_client_guid {
+	my $self = shift;
+	my $guid = '137fa714-39f0-44b2-aa20-e668a30f27f2';
+	
+	
+
+	return $guid
+}
+
+1;
 __END__
 
 =head1 NAME
@@ -147,5 +221,3 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 =cut
-
-1; # End of WWW::PIDS

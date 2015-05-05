@@ -3,13 +3,12 @@
 use strict;
 use warnings;
 
-use SOAP::Lite;
+use WWW::PIDS;
 use Data::Dumper;
 
-my $service = SOAP::Lite->service('http://ws.tramtracker.com.au/pidsservice/pids.asmx?WSDL')
-			->proxy('http://www.yarratrams.com.au/pidsservice/');
+my $p = WWW::PIDS->new;
 
-#$service->endpoint('http://www.yarratrams.com.au/pidsservice/');
-my $r = $service->TestGetRouteSummaries;
+my @r = $p->GetDestinationsForAllRoutes();
 
-print Dumper( $r );
+print Dumper( @r );
+
