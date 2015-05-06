@@ -26,7 +26,7 @@ our %METHODS = (
 	},
 	GetDestinationsForRoute => {
 		parameters	=> { routeNo => qr/^\d{1,3}$/ },
-		result		=> sub { return $_  }
+		result		=> sub { print Dumper( $_ )  }
 	}
 );
 
@@ -35,12 +35,12 @@ for my $method ( keys %METHODS ) {
 	no strict 'refs';
 
 	*$method = sub {
-		my ( $self, $parameters ) = @_;
+		my ( $self, %parameters ) = @_;
 
-		my $valid	= __validate_parameters( $method, $parameters );
+		my $valid	= __validate_parameters( $method, %parameters );
 		die $valid unless ( $valid == 1 );
 
-		my $body	= __construct_body( $method, $parameters );
+		my $body	= __construct_body( $method, %parameters );
 
 		my $r = SOAP::Lite->endpoint( $ENDPOINT )
 				  ->default_ns( $NS )
@@ -48,6 +48,8 @@ for my $method ( keys %METHODS ) {
 				  ->on_action( sub { "$NS$method" } )
 				  ->$method( $body, $self->{pids_header} )
 				  ->result;
+
+		print Dumper( $r );
 
 		my @r = $METHODS{ $method }{ 'result' }->($r);
 		return @r
@@ -57,13 +59,13 @@ for my $method ( keys %METHODS ) {
 }
 
 sub __validate_parameters {
-	my ( $m, $p ) = @_;
+	my ( $m, %p ) = @_;
 
 	while ( my ( $param, $regex ) = each %{ $METHODS{ $m }{ 'parameters' } } ) {
-		defined $p->{ $param } 
+		defined $p{ $param } 
 			or return "Mandatory parameter $param missing";
 
-		( $p->{ $param } =~ $regex ) 
+		( $p{ $param } =~ $regex ) 
 			or return "Value of parameter $param does not confirm to expected format";
 	}
 
@@ -71,10 +73,10 @@ sub __validate_parameters {
 }
 
 sub __construct_body {
-	my ( $m, $p ) = @_;
+	my ( $m, %p ) = @_;
 	my $b;
 
-	while ( my ( $param, $value ) = each %{ $p } ) {
+	while ( my ( $param, $value ) = each %p ) {
 		print "Setting $param => $value\n";
 		$b = SOAP::Data->name( $param => $value )->type('string')
 	}
