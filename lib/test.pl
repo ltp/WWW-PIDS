@@ -12,3 +12,6 @@ my @r = $p->GetDestinationsForAllRoutes();
 
 print Dumper( @r );
 
+@r = $p->GetDestinationForRoute( { routeNo => 19 } );
+
+print Dumper( @r );
