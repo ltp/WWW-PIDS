@@ -8,10 +8,11 @@ use Data::Dumper;
 
 my $p = WWW::PIDS->new;
 
-my @r = $p->GetDestinationsForAllRoutes();
+#my @r = $p->GetDestinationsForAllRoutes();
 
-print Dumper( @r );
+#print Dumper( @r );
 
-@r = $p->GetDestinationForRoute( { routeNo => 19 } );
+#my @r = $p->GetDestinationsForAllRoutes();
+my @r = $p->GetDestinationsForRoute({ routeNo => 19 });
 
 print Dumper( @r );

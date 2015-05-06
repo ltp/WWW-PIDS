@@ -21,11 +21,11 @@ our $PROXY	= 'http://ws.tramtracker.com.au/pidsservice/pids.asmx';
 
 our %METHODS = (
 	GetDestinationsForAllRoutes => {
-		parameters	=> [],
+		parameters	=> {},
 		result		=> sub { return map { WWW::PIDS::Destination->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfDestinationsForAllRoutes} } }
 	},
 	GetDestinationsForRoute => {
-		parameters	=> [ { routeNo => qr/^\d{1,3}$/ } ],
+		parameters	=> { routeNo => qr/^\d{1,3}$/ },
 		result		=> sub { return $_  }
 	}
 );
@@ -35,20 +35,21 @@ for my $method ( keys %METHODS ) {
 	no strict 'refs';
 
 	*$method = sub {
-		my ( $self, %parameters ) = shift;
-		$self->__validate_parameters( $method, %parameters ) or die $self->{__error_messgae};
+		my ( $self, $parameters ) = @_;
 
-		my $body = __construct_body( %parameters );
+		my $valid	= __validate_parameters( $method, $parameters );
+		die $valid unless ( $valid == 1 );
+
+		my $body	= __construct_body( $method, $parameters );
 
 		my $r = SOAP::Lite->endpoint( $ENDPOINT )
-				  ->ns( $NS )
+				  ->default_ns( $NS )
 				  ->proxy( $PROXY )
 				  ->on_action( sub { "$NS$method" } )
 				  ->$method( $body, $self->{pids_header} )
 				  ->result;
 
 		my @r = $METHODS{ $method }{ 'result' }->($r);
-		#my @r = @{ $r->{'diffgram'}->{'DocumentElement'}->{'ListOfDestinationsForAllRoutes'} };
 		return @r
 	};
 
@@ -56,13 +57,29 @@ for my $method ( keys %METHODS ) {
 }
 
 sub __validate_parameters {
-	my ( $self, $m, %p ) = @_;
+	my ( $m, $p ) = @_;
+
+	while ( my ( $param, $regex ) = each %{ $METHODS{ $m }{ 'parameters' } } ) {
+		defined $p->{ $param } 
+			or return "Mandatory parameter $param missing";
+
+		( $p->{ $param } =~ $regex ) 
+			or return "Value of parameter $param does not confirm to expected format";
+	}
 
 	return 1
 }
 
 sub __construct_body {
+	my ( $m, $p ) = @_;
+	my $b;
 
+	while ( my ( $param, $value ) = each %{ $p } ) {
+		print "Setting $param => $value\n";
+		$b = SOAP::Data->name( $param => $value )->type('string')
+	}
+
+	return $b
 }
 
 sub new {
