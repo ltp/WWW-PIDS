@@ -5,6 +5,7 @@ use warnings;
 
 use SOAP::Lite;
 use Data::Dumper;
+use WWW::PIDS::Destination;
 
 our $VERSION	= '0.01';
 our %ATTR	= (
@@ -21,8 +22,11 @@ our $PROXY	= 'http://ws.tramtracker.com.au/pidsservice/pids.asmx';
 our %METHODS = (
 	GetDestinationsForAllRoutes => {
 		parameters	=> [],
-		result		=> sub { my $r = shift; my $ref = ref( $r ); print "ref is a $ref\n"  }
-	}
+		result		=> sub { return map { WWW::PIDS::Destination->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfDestinationsForAllRoutes} } }
+	},
+#	GetDestinationsForRoute => {
+#		parameters	=> [ { routeNo => q
+#	}
 );
 
 for my $method ( keys %METHODS ) {
@@ -39,7 +43,7 @@ for my $method ( keys %METHODS ) {
 				  ->$method( $self->{pids_header} )
 				  ->result;
 
-		my @r = $METHODS{ $method }{ 'result' }->(\$r);
+		my @r = $METHODS{ $method }{ 'result' }->($r);
 		#my @r = @{ $r->{'diffgram'}->{'DocumentElement'}->{'ListOfDestinationsForAllRoutes'} };
 		return @r
 	};
