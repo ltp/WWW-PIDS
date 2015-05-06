@@ -6,6 +6,7 @@ use warnings;
 use SOAP::Lite;
 use Data::Dumper;
 use WWW::PIDS::Destination;
+use WWW::PIDS::RouteDestination;
 
 our $VERSION	= '0.01';
 our %ATTR	= (
@@ -22,11 +23,12 @@ our $PROXY	= 'http://ws.tramtracker.com.au/pidsservice/pids.asmx';
 our %METHODS = (
 	GetDestinationsForAllRoutes => {
 		parameters	=> {},
-		result		=> sub { return map { WWW::PIDS::Destination->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfDestinationsForAllRoutes} } }
+		result		=> sub { return map { WWW::PIDS::Destination->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfDestinationsForAllRoutes} } 
+					}
 	},
 	GetDestinationsForRoute => {
 		parameters	=> { routeNo => qr/^\d{1,3}$/ },
-		result		=> sub { print Dumper( $_ )  }
+		result		=> sub { return WWW::PIDS::RouteDestination->new( %{ shift->{diffgram}->{DocumentElement}->{RouteDestinations} } ) }
 	}
 );
 
@@ -48,8 +50,6 @@ for my $method ( keys %METHODS ) {
 				  ->on_action( sub { "$NS$method" } )
 				  ->$method( $body, $self->{pids_header} )
 				  ->result;
-
-		print Dumper( $r );
 
 		my @r = $METHODS{ $method }{ 'result' }->($r);
 		return @r
@@ -77,7 +77,6 @@ sub __construct_body {
 	my $b;
 
 	while ( my ( $param, $value ) = each %p ) {
-		print "Setting $param => $value\n";
 		$b = SOAP::Data->name( $param => $value )->type('string')
 	}
 
