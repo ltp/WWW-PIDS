@@ -37,8 +37,8 @@ our %METHODS = (
 		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfNonSubRoutes} } }
 	},
 	GetMainRoutesForStop => {
-		parameters	=> [ { stopNo => qr/^\d{4}$/ } ],
-		result		=> sub { print Dumper( shift ) }
+		parameters	=> [ { param => 'stopNo', format => qr/^\d{4}$/, type => 'short' } ],
+		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfMainRoutesAtStop} } }
 	},
 	GetRouteStopsByRoute => {
 		parameters	=> [ { param => 'routeNo', format => qr/^\d{1,3}$/, type => 'string' }, 
