@@ -6,6 +6,7 @@ use warnings;
 use SOAP::Lite;
 use Data::Dumper;
 use WWW::PIDS::Stop;
+use WWW::PIDS::RouteNo;
 use WWW::PIDS::Destination;
 use WWW::PIDS::RouteDestination;
 
@@ -33,7 +34,7 @@ our %METHODS = (
 	},
 	GetMainRoutes => {
 		parameters	=> [],
-		result		=> sub { print Dumper( shift ) }
+		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfNonSubRoutes} } }
 	},
 	GetMainRoutesForStop => {
 		parameters	=> [ { stopNo => qr/^\d{4}$/ } ],
