@@ -8,6 +8,7 @@ use Data::Dumper;
 use WWW::PIDS::Stop;
 use WWW::PIDS::RouteNo;
 use WWW::PIDS::Destination;
+use WWW::PIDS::RoutesCollection;
 use WWW::PIDS::RouteDestination;
 
 our $VERSION	= '0.01';
@@ -29,26 +30,36 @@ our %METHODS = (
 					}
 	},
 	GetDestinationsForRoute => {
-		parameters	=> [ { param => 'routeNo', format => qr/^\d{1,3}$/, type => 'string' } ],
+		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}$/,	type => 'string' } ],
 		result		=> sub { return WWW::PIDS::RouteDestination->new( %{ shift->{diffgram}->{DocumentElement}->{RouteDestinations} } ) }
+	},
+	GetListOfStopsByRouteNoAndDirection => {
+		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}$/,	type => 'string' }, 
+				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
+		result		=> sub { return map { WWW::PIDS::Stop->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{S} } }
 	},
 	GetMainRoutes => {
 		parameters	=> [],
 		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfNonSubRoutes} } }
 	},
 	GetMainRoutesForStop => {
-		parameters	=> [ { param => 'stopNo', format => qr/^\d{4}$/, type => 'short' } ],
+		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' } ],
 		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfMainRoutesAtStop} } }
 	},
-	GetRouteStopsByRoute => {
-		parameters	=> [ { param => 'routeNo', format => qr/^\d{1,3}$/, type => 'string' }, 
-				     { param => 'isUpDirection', format => qr/^(0|1)$/, type => 'boolean' } ],
-		result		=> sub { print Dumper( shift ) }
+	GetNextPredictedArrivalTimeAtStopsForTramNo  => {
+		parameters	=> [ { param => 'tramNo',	format => qr/^\d{1,4}$/,	type => 'short' } ],
+		result		=> sub { print Dumper( @_ ) }
 	},
-	GetListOfStopsByRouteNoAndDirection => {
-		parameters	=> [ { param => 'routeNo', format => qr/^\d{1,3}$/, type => 'string' }, 
-				     { param => 'isUpDirection', format => qr/^(0|1)$/, type => 'boolean' } ],
-		result		=> sub { return map { WWW::PIDS::Stop->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{S} } }
+	GetNextPredictedRoutesCollection  => {
+		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' },
+				     { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
+				     { param => 'lowFloor',	format => qr/^(0|1)$/,		type => 'boolean' } ],
+		result		=> sub { return map { WWW::PIDS::RoutesCollection->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ToReturn} } }
+	},
+	GetRouteStopsByRoute => {
+		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' }, 
+				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
+		result		=> sub { print Dumper( shift ) }
 	},
 );
 
@@ -60,7 +71,7 @@ for my $method ( keys %METHODS ) {
 		my ( $self, %parameters ) = @_;
 
 		my $valid	= __validate_parameters( $method, %parameters );
-		die $valid unless ( $valid == 1 );
+		die $valid unless ( $valid eq "1" );
 
 		my @body	= __construct_body( $method, %parameters );
 
