@@ -22,14 +22,28 @@ our $PROXY	= 'http://ws.tramtracker.com.au/pidsservice/pids.asmx';
 
 our %METHODS = (
 	GetDestinationsForAllRoutes => {
-		parameters	=> {},
+		parameters	=> [],
 		result		=> sub { return map { WWW::PIDS::Destination->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfDestinationsForAllRoutes} } 
 					}
 	},
 	GetDestinationsForRoute => {
-		parameters	=> { routeNo => qr/^\d{1,3}$/ },
+		parameters	=> [ { param => 'routeNo', format => qr/^\d{1,3}$/, type => 'string' } ],
 		result		=> sub { return WWW::PIDS::RouteDestination->new( %{ shift->{diffgram}->{DocumentElement}->{RouteDestinations} } ) }
-	}
+	},
+	GetMainRoutes => {
+		parameters	=> [],
+		result		=> sub { print Dumper( shift ) }
+	},
+	GetMainRoutesForStop => {
+		parameters	=> [ { stopNo => qr/^\d{4}$/ } ],
+		result		=> sub { print Dumper( shift ) }
+	},
+	GetRouteStopsByRoute => {
+		parameters	=> [ { param => 'routeNo', format => qr/^\d{1,3}$/, type => 'string' }, 
+				     { param => 'isUpDirection', format => qr/^(0|1)$/, type => 'boolean' } ],
+		#parameters	=> { routeNo => qr/^\d{1,3}$/, isUpDirection => qr/^(0|1)$/ },
+		result		=> sub { print Dumper( shift ) }
+	},
 );
 
 for my $method ( keys %METHODS ) {
@@ -42,13 +56,13 @@ for my $method ( keys %METHODS ) {
 		my $valid	= __validate_parameters( $method, %parameters );
 		die $valid unless ( $valid == 1 );
 
-		my $body	= __construct_body( $method, %parameters );
+		my @body	= __construct_body( $method, %parameters );
 
 		my $r = SOAP::Lite->endpoint( $ENDPOINT )
 				  ->default_ns( $NS )
 				  ->proxy( $PROXY )
 				  ->on_action( sub { "$NS$method" } )
-				  ->$method( $body, $self->{pids_header} )
+				  ->$method( @body, $self->{pids_header} )
 				  ->result;
 
 		my @r = $METHODS{ $method }{ 'result' }->($r);
@@ -61,26 +75,39 @@ for my $method ( keys %METHODS ) {
 sub __validate_parameters {
 	my ( $m, %p ) = @_;
 
-	while ( my ( $param, $regex ) = each %{ $METHODS{ $m }{ 'parameters' } } ) {
-		defined $p{ $param } 
-			or return "Mandatory parameter $param missing";
+	for my $param ( @{ $METHODS{ $m }{ 'parameters' } } ) {
+		defined $p{ $param->{ param } } 
+			or return "Mandatory parameter $param->{ param } missing";
 
-		( $p{ $param } =~ $regex ) 
-			or return "Value of parameter $param does not confirm to expected format";
+		( $p{ $param->{ param } } =~ $param->{ format } )
+			or return "Value of parameter $param->{ param } does not confirm to expected format";
 	}
+
+#	while ( my ( $param, $regex ) = each %{ $METHODS{ $m }{ 'parameters' } } ) {
+#		defined $p{ $param } 
+#			or return "Mandatory parameter $param missing";
+#
+#		( $p{ $param } =~ $regex ) 
+#			or return "Value of parameter $param does not confirm to expected format";
+#	}
 
 	return 1
 }
 
 sub __construct_body {
 	my ( $m, %p ) = @_;
-	my $b;
+	my @b;
 
-	while ( my ( $param, $value ) = each %p ) {
-		$b = SOAP::Data->name( $param => $value )->type('string')
+	for my $param ( @{ $METHODS{ $m }{ 'parameters' } } ) {
+		push @b, SOAP::Data->name( $param->{ param } => $p{ $param->{ param } } )
+				   ->type( $param->{ type } )
 	}
 
-	return $b
+	#while ( my ( $param, $value ) = each %p ) {
+	#	push @b, SOAP::Data->name( $param => $value )
+	#}
+
+	return @b
 }
 
 sub new {
