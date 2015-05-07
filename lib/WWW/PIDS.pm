@@ -56,6 +56,12 @@ our %METHODS = (
 				     { param => 'lowFloor',	format => qr/^(0|1)$/,		type => 'boolean' } ],
 		result		=> sub { return map { WWW::PIDS::RoutesCollection->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ToReturn} } }
 	},
+	GetPlatformStopsByRouteAndDirection  => {
+		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
+				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
+		result		=> sub { print Dumper( @_ ) }
+		#result		=> sub { return map { WWW::PIDS::RoutesCollection->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ToReturn} } }
+	},
 	GetRouteStopsByRoute => {
 		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' }, 
 				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
