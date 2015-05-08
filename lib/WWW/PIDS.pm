@@ -8,7 +8,8 @@ use Data::Dumper;
 use WWW::PIDS::Stop;
 use WWW::PIDS::RouteNo;
 use WWW::PIDS::Destination;
-use WWW::PIDS::RoutesCollection;
+use WWW::PIDS::ScheduledTime;
+use WWW::PIDS::PredictedTime;
 use WWW::PIDS::RouteDestination;
 
 our $VERSION	= '0.01';
@@ -54,7 +55,7 @@ our %METHODS = (
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' },
 				     { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
 				     { param => 'lowFloor',	format => qr/^(0|1)$/,		type => 'boolean' } ],
-		result		=> sub { return map { WWW::PIDS::RoutesCollection->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ToReturn} } }
+		result		=> sub { return map { WWW::PIDS::ScheduledTime->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ToReturn} } }
 	},
 	GetPlatformStopsByRouteAndDirection  => {
 		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
@@ -66,6 +67,23 @@ our %METHODS = (
 		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' }, 
 				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
 		result		=> sub { print Dumper( shift ) }
+	},
+	GetRouteSummaries => {
+		parameters	=> [],
+		result		=> sub { print Dumper( shift ) }
+	},
+	GetSchedulesCollection  => {
+		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' },
+				     { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
+				     { param => 'lowFloor',	format => qr/^(0|1)$/,		type => 'boolean' },
+				     { param => 'clientRequestDateTime', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
+		result		=> sub { return map { WWW::PIDS::PredictedTime->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{SchedulesResultsTable} } }
+	},
+	GetSchedulesForTrip  => {
+		parameters	=> [ { param => 'tripID',	format => qr/^\d{1,}$/,		type => 'int' },
+				     { param => 'scheduledDateTime', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
+		result		=> sub { print Dumper( shift ) }
+		#result		=> sub { return map { WWW::PIDS::PredictedTime->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{SchedulesResultsTable} } }
 	},
 );
 
