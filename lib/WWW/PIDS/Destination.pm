@@ -20,8 +20,9 @@ sub new {
 	my $self		= bless {}, $class;
 
 	for my $a ( @ATTR ) {
-		$obj->{ $a } or die "Mandatory parameter $a not supplied in constructor";
-		$self->{ $a } = $obj->{ $a }
+		defined $obj->{ $a }
+			? $self->{ $a } = $obj->{ $a }
+			: die "Mandatory parameter $a not supplied in constructor" ;
 	}
 
 	return $self
