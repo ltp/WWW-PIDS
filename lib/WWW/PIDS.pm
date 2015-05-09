@@ -85,6 +85,11 @@ our %METHODS = (
 		result		=> sub { print Dumper( shift ) }
 		#result		=> sub { return map { WWW::PIDS::PredictedTime->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{SchedulesResultsTable} } }
 	},
+	GetStopInformation  => {
+		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' } ],
+		result		=> sub { print Dumper( shift ) }
+		#result		=> sub { return map { WWW::PIDS::Stop->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{StopInformation} } }
+	},
 );
 
 for my $method ( keys %METHODS ) {
