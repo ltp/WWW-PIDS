@@ -90,6 +90,10 @@ our %METHODS = (
 		result		=> sub { print Dumper( shift ) }
 		#result		=> sub { return map { WWW::PIDS::Stop->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{StopInformation} } }
 	},
+	GetStopAndRoutesUpdatesSince  => {
+		parameters	=> [ param => 'dateSince', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
+		
+	}	
 );
 
 for my $method ( keys %METHODS ) {
