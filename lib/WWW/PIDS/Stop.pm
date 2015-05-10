@@ -5,10 +5,12 @@ use warnings;
 
 our @ATTR = qw(Name Longitude Latitude TID SuburbName Description);
 
+our @OATTR = qw(CityDirection FlagStopNo HasConnectingBuses HasConnectingTrains HasConnectingTrams IsPlatformStop StopLength StopName Zones);
+
 {
 	no strict 'refs';
 
-	*$_ = sub { return shift->{ $_ } } for ( @ATTR );
+	*$_ = sub { return shift->{ $_ } } for ( @ATTR, @OATTR );
 	
 }
 
@@ -20,6 +22,10 @@ sub new {
 		defined $obj->{ $a }
 			? $self->{ $a } = $obj->{ $a }
 			: die "Mandatory parameter $a not suppied in constructor" ;
+	}
+
+	for my $a ( @OATTR ) {
+		$self->{ $_ } = ( defined $obj->{ $_ } ? $obj->{ $_ } : '' )
 	}
 
 	return $self
