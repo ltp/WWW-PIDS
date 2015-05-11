@@ -5,7 +5,7 @@ use warnings;
 
 use SOAP::Lite;
 use Data::Dumper;
-use WWW::PIDS::Stop;
+use WWW::PIDS::ListedStop;
 use WWW::PIDS::RouteNo;
 use WWW::PIDS::Destination;
 use WWW::PIDS::ScheduledTime;
@@ -40,7 +40,7 @@ our %METHODS = (
 	GetListOfStopsByRouteNoAndDirection => {
 		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}$/,	type => 'string' }, 
 				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
-		result		=> sub { return map { WWW::PIDS::Stop->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{S} } }
+		result		=> sub { return map { WWW::PIDS::ListedStop->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{S} } }
 	},
 	GetMainRoutes => {
 		parameters	=> [],
