@@ -11,6 +11,9 @@ use WWW::PIDS::Destination;
 use WWW::PIDS::ScheduledTime;
 use WWW::PIDS::PredictedTime;
 use WWW::PIDS::RouteDestination;
+use WWW::PIDS::CoreDataChanges;
+use WWW::PIDS::StopChange;
+use WWW::PIDS::RouteChange;
 
 our $VERSION	= '0.01';
 our %ATTR	= (
@@ -90,10 +93,15 @@ our %METHODS = (
 		result		=> sub { print Dumper( shift ) }
 		#result		=> sub { return map { WWW::PIDS::Stop->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{StopInformation} } }
 	},
-	GetStopAndRoutesUpdatesSince  => {
-		parameters	=> [ param => 'dateSince', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
-		
-	}	
+	GetStopsAndRoutesUpdatesSince  => {
+		parameters	=> [ { param => 'dateSince', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
+		result		=> sub { my $d = shift; 
+					my @r = map { WWW::PIDS::RouteChange->new( $_ ) } @{ $d->{diffgram}->{dsCoreDataChanges}->{dtRoutesChanges} }; 
+					my @s = map { WWW::PIDS::StopChange->new( $_ ) } @{ $d->{diffgram}->{dsCoreDataChanges}->{dtStopsChanges} };
+					my $t = $d->{diffgram}->{dsCoreDataChanges}->{dtServerTime};
+					return WWW::PIDS::CoreDataChanges->new( ServerTime => $t, RouteChanges => \@r, StopChanges => \@s ) 
+					}
+	}
 );
 
 for my $method ( keys %METHODS ) {
@@ -115,8 +123,7 @@ for my $method ( keys %METHODS ) {
 				  ->$method( @body, $self->{pids_header} )
 				  ->result;
 
-		my @r = $METHODS{ $method }{ 'result' }->($r);
-		return @r
+		return $METHODS{ $method }{ 'result' }->($r);
 	};
 
 	}
