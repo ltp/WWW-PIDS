@@ -13,6 +13,7 @@ use WWW::PIDS::PredictedTime;
 use WWW::PIDS::RouteDestination;
 use WWW::PIDS::CoreDataChanges;
 use WWW::PIDS::StopChange;
+use WWW::PIDS::StopInformation;
 use WWW::PIDS::RouteChange;
 
 our $VERSION	= '0.01';
@@ -85,13 +86,13 @@ our %METHODS = (
 	GetSchedulesForTrip  => {
 		parameters	=> [ { param => 'tripID',	format => qr/^\d{1,}$/,		type => 'int' },
 				     { param => 'scheduledDateTime', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
-		result		=> sub { print Dumper( shift ) }
-		#result		=> sub { return map { WWW::PIDS::PredictedTime->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{SchedulesResultsTable} } }
+		#result		=> sub { print Dumper( shift ) }
+		#result		=> sub { return WWW::PIDS::PredictedTime->new( shift->{diffgram}->{DocumentElement}->{SchedulesResultsTable} ) }
 	},
 	GetStopInformation  => {
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' } ],
-		result		=> sub { print Dumper( shift ) }
-		#result		=> sub { return map { WWW::PIDS::Stop->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{StopInformation} } }
+		#result		=> sub { print Dumper( shift ) }
+		result		=> sub { return WWW::PIDS::StopInformation->new( shift->{diffgram}->{DocumentElement}->{StopInformation} ) }
 	},
 	GetStopsAndRoutesUpdatesSince  => {
 		parameters	=> [ { param => 'dateSince', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
