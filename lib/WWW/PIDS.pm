@@ -30,25 +30,35 @@ our $PROXY	= 'http://ws.tramtracker.com.au/pidsservice/pids.asmx';
 our %METHODS = (
 	GetDestinationsForAllRoutes => {
 		parameters	=> [],
-		result		=> sub { return map { WWW::PIDS::Destination->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfDestinationsForAllRoutes} } 
+		result		=> sub { return map { WWW::PIDS::Destination->new( $_ ) } 
+						@{ shift->{diffgram}->{DocumentElement}->{ListOfDestinationsForAllRoutes} } 
 					}
 	},
 	GetDestinationsForRoute => {
 		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}$/,	type => 'string' } ],
-		result		=> sub { return WWW::PIDS::RouteDestination->new( %{ shift->{diffgram}->{DocumentElement}->{RouteDestinations} } ) }
+		result		=> sub { return WWW::PIDS::RouteDestination->new( 
+						%{ shift->{diffgram}->{DocumentElement}->{RouteDestinations} } 
+					 ) 
+					}
 	},
 	GetListOfStopsByRouteNoAndDirection => {
 		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}$/,	type => 'string' }, 
 				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
-		result		=> sub { return map { WWW::PIDS::ListedStop->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{S} } }
+		result		=> sub { return map { WWW::PIDS::ListedStop->new( $_ ) } 
+						@{ shift->{diffgram}->{DocumentElement}->{S} } 
+					}
 	},
 	GetMainRoutes => {
 		parameters	=> [],
-		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfNonSubRoutes} } }
+		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } 
+						@{ shift->{diffgram}->{DocumentElement}->{ListOfNonSubRoutes} } 
+					}
 	},
 	GetMainRoutesForStop => {
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' } ],
-		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ListOfMainRoutesAtStop} } }
+		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } 
+						@{ shift->{diffgram}->{DocumentElement}->{ListOfMainRoutesAtStop} } 
+					}
 	},
 	GetNextPredictedArrivalTimeAtStopsForTramNo  => {
 		parameters	=> [ { param => 'tramNo',	format => qr/^\d{1,4}$/,	type => 'short' } ],
@@ -58,7 +68,9 @@ our %METHODS = (
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' },
 				     { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
 				     { param => 'lowFloor',	format => qr/^(0|1)$/,		type => 'boolean' } ],
-		result		=> sub { return map { WWW::PIDS::ScheduledTime->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ToReturn} } }
+		result		=> sub { return map { WWW::PIDS::ScheduledTime->new( $_ ) } 
+						@{ shift->{diffgram}->{DocumentElement}->{ToReturn} } 
+					}
 	},
 	GetPlatformStopsByRouteAndDirection  => {
 		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
@@ -80,7 +92,9 @@ our %METHODS = (
 				     { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
 				     { param => 'lowFloor',	format => qr/^(0|1)$/,		type => 'boolean' },
 				     { param => 'clientRequestDateTime', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
-		result		=> sub { return map { WWW::PIDS::PredictedTime->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{SchedulesResultsTable} } }
+		result		=> sub { return map { WWW::PIDS::PredictedTime->new( $_ ) } 
+						@{ shift->{diffgram}->{DocumentElement}->{SchedulesResultsTable} } 
+					}
 	},
 	GetSchedulesForTrip  => {
 		parameters	=> [ { param => 'tripID',	format => qr/^\d{1,}$/,		type => 'int' },
@@ -96,8 +110,10 @@ our %METHODS = (
 	GetStopsAndRoutesUpdatesSince  => {
 		parameters	=> [ { param => 'dateSince', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
 		result		=> sub { my $d = shift; 
-					my @r = map { WWW::PIDS::RouteChange->new( $_ ) } @{ $d->{diffgram}->{dsCoreDataChanges}->{dtRoutesChanges} }; 
-					my @s = map { WWW::PIDS::StopChange->new( $_ ) } @{ $d->{diffgram}->{dsCoreDataChanges}->{dtStopsChanges} };
+					my @r = map { WWW::PIDS::RouteChange->new( $_ ) } 
+						@{ $d->{diffgram}->{dsCoreDataChanges}->{dtRoutesChanges} }; 
+					my @s = map { WWW::PIDS::StopChange->new( $_ ) } 
+						@{ $d->{diffgram}->{dsCoreDataChanges}->{dtStopsChanges} };
 					my $t = $d->{diffgram}->{dsCoreDataChanges}->{dtServerTime};
 					return WWW::PIDS::CoreDataChanges->new( ServerTime => $t, RouteChanges => \@r, StopChanges => \@s ) 
 					}
@@ -140,14 +156,6 @@ sub __validate_parameters {
 			or return "Value of parameter $param->{ param } does not confirm to expected format";
 	}
 
-#	while ( my ( $param, $regex ) = each %{ $METHODS{ $m }{ 'parameters' } } ) {
-#		defined $p{ $param } 
-#			or return "Mandatory parameter $param missing";
-#
-#		( $p{ $param } =~ $regex ) 
-#			or return "Value of parameter $param does not confirm to expected format";
-#	}
-
 	return 1
 }
 
@@ -159,10 +167,6 @@ sub __construct_body {
 		push @b, SOAP::Data->name( $param->{ param } => $p{ $param->{ param } } )
 				   ->type( $param->{ type } )
 	}
-
-	#while ( my ( $param, $value ) = each %p ) {
-	#	push @b, SOAP::Data->name( $param => $value )
-	#}
 
 	return @b
 }
@@ -192,66 +196,43 @@ sub new {
 	return $self
 }
 
-sub __header {
-	my $self
-}
-
 sub get_new_client_guid {
 	my $self = shift;
 	my $guid = '137fa714-39f0-44b2-aa20-e668a30f27f2';
-	
-	
 
 	return $guid
 }
 
 1;
+
 __END__
 
 =head1 NAME
 
-WWW::PIDS - The great new WWW::PIDS!
-
-=head1 VERSION
-
-Version 0.01
-
-=cut
-
-our $VERSION = '0.01';
-
+WWW::PIDS - Perl API for the tramTRACKER PIDS Web Service
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+WWW::PIDS is a Perl API to the PIDS tramTRACKER PIDS web service.
+
+The tramTRACKER PIDS web service " is a public Web Service that provides a set 
+of Web Methods to request real-time and scheduled tram arrival times, as well 
+as stops and routes information."
+
+You can find more infomration on the tramTRACKER PIDS web service here
+L<http://ws.tramtracker.com.au/pidsservice/pids.asmx>.
 
 Perhaps a little code snippet.
 
     use WWW::PIDS;
 
-    my $foo = WWW::PIDS->new();
+    my $p = WWW::PIDS->new();
+
     ...
 
-=head1 EXPORT
+=head1 METHODS
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
-=head1 SUBROUTINES/METHODS
-
-=head2 function1
-
-=cut
-
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
-}
+=head2 new()
 
 =head1 AUTHOR
 
@@ -263,15 +244,11 @@ Please report any bugs or feature requests to C<bug-www-pids at rt.cpan.org>, or
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PIDS>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
-
-
-
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
     perldoc WWW::PIDS
-
 
 You can also look for information at:
 
