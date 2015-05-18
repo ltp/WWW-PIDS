@@ -43,7 +43,7 @@ our %METHODS = (
 					}
 	},
 	GetListOfStopsByRouteNoAndDirection => {
-		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}$/,	type => 'string' }, 
+		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}\w{0,2}$/,	type => 'string' }, 
 				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
 		result		=> sub { return map { WWW::PIDS::ListedStop->new( $_ ) } 
 						@{ shift->{diffgram}->{DocumentElement}->{S} } 
@@ -154,7 +154,7 @@ sub __validate_parameters {
 			or return "Mandatory parameter $param->{ param } missing";
 
 		( $p{ $param->{ param } } =~ $param->{ format } )
-			or return "Value of parameter $param->{ param } does not confirm to expected format";
+			or return "Value of parameter $param->{ param } does not conform to expected format";
 	}
 
 	return 1
