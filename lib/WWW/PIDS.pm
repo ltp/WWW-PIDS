@@ -213,16 +213,21 @@ WWW::PIDS - Perl API for the tramTRACKER PIDS Web Service
 
 =head1 SYNOPSIS
 
-WWW::PIDS is a Perl API to the PIDS tramTRACKER PIDS web service.
+WWW::PIDS is a Perl API to the PIDS tramTRACKER web service.
 
-The tramTRACKER PIDS web service " is a public Web Service that provides a set 
+The tramTRACKER PIDS web service "is a public Web Service that provides a set 
 of Web Methods to request real-time and scheduled tram arrival times, as well 
 as stops and routes information."
 
 You can find more infomration on the tramTRACKER PIDS web service here
 L<http://ws.tramtracker.com.au/pidsservice/pids.asmx>.
 
-Perhaps a little code snippet.
+This Perl API aims to implement a one-to-one binding with the methods provided
+by the web service.  Accordingly, the method names within this package are
+named after the corresponding names of the methods exposed via the web service.
+Unfortunately, this results in some exceedingly long camel-cased method names -
+those wanting more aesthetically named methods and slightly more usable syntax
+may prefer teh WWW::PIDS::Sugar package.
 
     use WWW::PIDS;
 
