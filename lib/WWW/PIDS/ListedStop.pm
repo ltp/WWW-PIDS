@@ -17,8 +17,7 @@ our @OATTR= qw(TurnType TurnMessage);
 sub new {
 	my ( $class, $obj )	= @_;
 	my $self		= bless {} , $class;
-use Data::Dumper;
-print Dumper( $obj );
+
 	for my $a ( @ATTR ) {
 		defined $obj->{ $a }
 			? $self->{ $a } = $obj->{ $a }
@@ -26,7 +25,7 @@ print Dumper( $obj );
 	}
 
 	for my $a ( @OATTR ) {
-		if ( defined $obj->{ $a } ) { print "Is: $obj->{ $a }\n" }
+		# TODO - this class still needs fixing
 		defined $obj->{ $a }
 			? $self->{ $a } = $obj->{ $a }
 			: $self->{ $a } = '' ;
