@@ -19,8 +19,8 @@ use WWW::PIDS::RouteChange;
 our $VERSION	= '0.01';
 our %ATTR	= (
 			ClientGuid		=> undef,
-			ClientType		=> 'WEBPID',
-			ClientVersion		=> '1.0.0',
+			ClientType		=> 'WWW::PIDS',
+			ClientVersion		=> $VERSION,
 			ClientWebServiceVersion	=> '6.4.0.0',
 		);
 
@@ -73,9 +73,12 @@ our %METHODS = (
 						@{ shift->{diffgram}->{DocumentElement}->{ToReturn} } 
 					}
 	},
+	GetNewClientGuid  => {
+		parameters	=> [],
+		result		=> sub { return shift }
+	},	
 	GetPlatformStopsByRouteAndDirection  => {
-		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
-				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
+		parameters	=> [],
 		result		=> sub { print Dumper( @_ ) }
 		#result		=> sub { return map { WWW::PIDS::RoutesCollection->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ToReturn} } }
 	},
@@ -182,7 +185,7 @@ sub new {
 			: $self->{ $a } = $ATTR{ $a } ;
 	}
 
-	defined $self->{ 'ClientGuid' } or $self->{ 'ClientGuid' } = $self->get_new_client_guid();
+	defined $self->{ 'ClientGuid' } or $self->{ 'ClientGuid' } = $self->GetNewClientGuid();
 	$ATTR{ 'ClientGuid' } = $self->{ 'ClientGuid' };
 
 	$self->{pids_header} = SOAP::Header->name( 'PidsClientHeader' )
@@ -238,7 +241,35 @@ may prefer teh WWW::PIDS::Sugar package.
 
 =head1 METHODS
 
-=head2 new()
+=head2 new ( % ARGS )
+
+Constructor - creates a new WWW::PIDS object.
+
+This method accepts four optional parameters, if any parameter is ommitted a
+default value will be used.  The parameters and their defaults are:
+
+=over 4
+
+=item * ClientGuid
+
+The client GUID that must be passed to the tramTRACKER PIDS web service.  If
+you do not pass this parameter, then on instatiation of a new WWW::PIDS object
+an implicit call will be made to the GetClientGuid() method requesting a new
+GUID.
+
+=item * ClientType
+
+'WWW::PIDS',
+
+=item * ClientVersion
+
+VERSION,
+
+=item * ClientWebServiceVersion
+
+'6.4.0.0',
+
+=back
 
 =head1 AUTHOR
 
@@ -259,6 +290,10 @@ You can find documentation for this module with the perldoc command.
 You can also look for information at:
 
 =over 4
+
+=item * tramTRACKER PIDS Web Service 
+
+L<http://ws.tramtracker.com.au/pidsservice/pids.asmx>
 
 =item * RT: CPAN's request tracker (report bugs here)
 
