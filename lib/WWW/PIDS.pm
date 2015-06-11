@@ -259,15 +259,27 @@ GUID.
 
 =item * ClientType
 
-'WWW::PIDS',
+A string identifying the client application type.  If you require a dedicated
+client type, contact feedback@yarratrams.com.au.
+
+The default value for this parameter is the module namespace (WWW::PIDS).
 
 =item * ClientVersion
 
-VERSION,
+The version of the client application.  The version must match the regex:
+
+	^(\d{1,3}\.)(\d{1,3}\.)(\d{1,3}\.)(\d{1,5})$
+
+The default value for this parameter is the module version.
 
 =item * ClientWebServiceVersion
 
-'6.4.0.0',
+The current Web Service version that the client application is connecting to. 
+The version format has to match the following expression:
+
+	^(\d{1,3}\.)(\d{1,3}\.)(\d{1,3}\.)(\d{1,5})$
+
+The default value for this parameter is the current web service version (6.4.0.0).
 
 =back
 
