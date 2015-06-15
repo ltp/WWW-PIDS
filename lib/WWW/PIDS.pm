@@ -288,9 +288,47 @@ The return type is an array of L<WWW::PIDS::Destination> objects.
 
 =head2 GetDestinationsForRoute ( routeNo => $routeNo )
 
-Accepts a single, mandatory parameter - the route number - and 
+Accepts a single mandatory parameter; the route number - and 
 returns a L<WWW::PIDS::RouteDestination> object containing route
 destination information for the specified route.
+
+=head2 GetListOfStopsByRouteNoAndDirection ( routeNo => $routeNo, isUpDirection => boolean )
+
+Accepts two mandatory parameters; the route number, and an boolean value
+(either 0 or 1) indicating if the direction of travel is in the "up" direction
+according to the service specification.
+
+Returns an array of L<WWW::PIDS::ListedStop> objects representing an in-order
+list of the stops on the route in the direction of travel.
+
+Please see the L<NOTES> section regarding the terminology, convention, and
+specifities of this module including naming of parameters.
+
+=head2 GetMainRoutes ()
+
+Returns an array of L<WWW::PIDS::RouteNo> objects containing information on
+all main routes.
+
+=head1 NOTES
+
+Many of the methods, parameters, attributes, stylistic and design choices in this module 
+may appear to be (at first glance) nonsensical, unintuitive, and ill-informed.
+
+However, the key philosophy in implementing this module has been to maintain strict adherence
+to the conventions and naming used in the official tramTRACKER PIDS web service, and as such,
+where at all possible, the naming conventions used there have been maintained herein.
+
+This has been done intentionally to try to maintain consistency between the web service
+and this module so as to try and reduce any potential source of confusion for users when
+attempting to mentally map the methods of one to the other, and also to try and provide a very
+close mapping of the official API to this binding.
+
+Likewise, the extensive use of objects as a return type for even very simple methods has been
+done for the purposes of consistency and with the philosophy that an object provides some
+level of mapping to the official SOAP response type.
+
+If you would prefer more aesthetically named methods and slightly more usable syntax,
+then please consider the L<WWW::PIDS::Sugar> package.
 
 =head1 AUTHOR
 
