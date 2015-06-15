@@ -19,7 +19,7 @@ use WWW::PIDS::RouteChange;
 our $VERSION	= '0.01';
 our %ATTR	= (
 			ClientGuid		=> undef,
-			ClientType		=> 'WWW::PIDS',
+			ClientType		=> 'WEBPID',
 			ClientVersion		=> $VERSION,
 			ClientWebServiceVersion	=> '6.4.0.0',
 		);
@@ -200,13 +200,6 @@ sub new {
 	return $self
 }
 
-sub get_new_client_guid {
-	my $self = shift;
-	my $guid = '137fa714-39f0-44b2-aa20-e668a30f27f2';
-
-	return $guid
-}
-
 1;
 
 __END__
@@ -231,7 +224,7 @@ by the web service.  Accordingly, the method names within this package are
 named after the corresponding names of the methods exposed via the web service.
 Unfortunately, this results in some exceedingly long camel-cased method names -
 those wanting more aesthetically named methods and slightly more usable syntax
-may prefer teh WWW::PIDS::Sugar package.
+may prefer the WWW::PIDS::Sugar package.
 
     use WWW::PIDS;
 
@@ -262,7 +255,7 @@ GUID.
 A string identifying the client application type.  If you require a dedicated
 client type, contact feedback@yarratrams.com.au.
 
-The default value for this parameter is the module namespace (WWW::PIDS).
+The default value for this parameter is 'WEBPID'.
 
 =item * ClientVersion
 
@@ -282,6 +275,22 @@ The version format has to match the following expression:
 The default value for this parameter is the current web service version (6.4.0.0).
 
 =back
+
+=head2 GetNewClientGuid ()
+
+Returns a new client GUID for use with the tramTRACKER PIDS web service.  
+
+=head2 GetDestinationsForAllRoutes ()
+
+Returns a list of destinations for all routes in the network.
+
+The return type is an array of L<WWW::PIDS::Destination> objects.
+
+=head2 GetDestinationsForRoute ( routeNo => $routeNo )
+
+Accepts a single, mandatory parameter - the route number - and 
+returns a L<WWW::PIDS::RouteDestination> object containing route
+destination information for the specified route.
 
 =head1 AUTHOR
 
