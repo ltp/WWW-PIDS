@@ -5,16 +5,18 @@ use warnings;
 
 use SOAP::Lite;
 use Data::Dumper;
-use WWW::PIDS::ListedStop;
-use WWW::PIDS::RouteNo;
-use WWW::PIDS::Destination;
-use WWW::PIDS::ScheduledTime;
-use WWW::PIDS::PredictedTime;
-use WWW::PIDS::RouteDestination;
 use WWW::PIDS::CoreDataChanges;
+use WWW::PIDS::Destination;
+use WWW::PIDS::ListedStop;
+use WWW::PIDS::NextPredictedStopDetail;
+use WWW::PIDS::PredictedTime;
+use WWW::PIDS::PredictedArrivalTimeData;
+use WWW::PIDS::RouteChange;
+use WWW::PIDS::RouteDestination;
+use WWW::PIDS::RouteNo;
+use WWW::PIDS::ScheduledTime;
 use WWW::PIDS::StopChange;
 use WWW::PIDS::StopInformation;
-use WWW::PIDS::RouteChange;
 
 our $VERSION	= '0.01';
 our %ATTR	= (
@@ -63,7 +65,10 @@ our %METHODS = (
 	},
 	GetNextPredictedArrivalTimeAtStopsForTramNo  => {
 		parameters	=> [ { param => 'tramNo',	format => qr/^\d{1,4}$/,	type => 'short' } ],
-		result		=> sub { print Dumper( @_ ) }
+		result		=> sub {	return WWW::PIDS::PredictedArrivalTimeData->new( 
+							shift->{diffgram}->{NewDataSet}
+						)
+					}
 	},
 	GetNextPredictedRoutesCollection  => {
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' },
@@ -234,7 +239,7 @@ may prefer the WWW::PIDS::Sugar package.
 
 =head1 METHODS
 
-=head2 new ( % ARGS )
+=head2 new ( %ARGS )
 
 Constructor - creates a new WWW::PIDS object.
 
@@ -286,13 +291,13 @@ Returns a list of destinations for all routes in the network.
 
 The return type is an array of L<WWW::PIDS::Destination> objects.
 
-=head2 GetDestinationsForRoute ( routeNo => $routeNo )
+=head2 GetDestinationsForRoute ( routeNo => SCALAR )
 
 Accepts a single mandatory parameter; the route number - and 
 returns a L<WWW::PIDS::RouteDestination> object containing route
 destination information for the specified route.
 
-=head2 GetListOfStopsByRouteNoAndDirection ( routeNo => $routeNo, isUpDirection => boolean )
+=head2 GetListOfStopsByRouteNoAndDirection ( routeNo => SCALAR, isUpDirection => BOOLEAN )
 
 Accepts two mandatory parameters; the route number, and an boolean value
 (either 0 or 1) indicating if the direction of travel is in the "up" direction
@@ -308,6 +313,17 @@ specifities of this module including naming of parameters.
 
 Returns an array of L<WWW::PIDS::RouteNo> objects containing information on
 all main routes.
+
+=head2 GetMainRoutesForStop ( stopNo => SCALAR )
+
+Accepts a single mandatory parameter; the stop number for which you wish to
+retrieve a list of main routes, and returns an array of L<WWW::PIDS::RouteNo>
+obejcts representing the main routes for the specified stop.
+
+=head2 GetNextPredictedArrivalTimeAtStopsForTramNo ( tramNo => $tramNo )
+
+Accepts a single mandatory parameter; the tram number for which you wish to
+retrieve the predicted stop arrival time, and returns a L<WWW::PIDS::>
 
 =head1 NOTES
 
