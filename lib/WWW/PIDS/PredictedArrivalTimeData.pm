@@ -1,4 +1,4 @@
-package WWW::PIDS::PredicatedArrivalTimeData;
+package WWW::PIDS::PredictedArrivalTimeData;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use warnings;
 use WWW::PIDS::TramNoRunDetail;
 use WWW::PIDS::NextPredictedStopDetail;
 
-our @ATTR = qw(TramNoRunDetailsTable NextPredictedStopsDetailTable);
+our @ATTR = qw(TramNoRunDetailsTable NextPredictedStopsDetailsTable);
 
 {
 	no strict 'refs';
