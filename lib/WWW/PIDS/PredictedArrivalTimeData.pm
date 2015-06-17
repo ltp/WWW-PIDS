@@ -17,6 +17,11 @@ sub new {
 	my ( $class, $obj ) = @_;
 	my $self = bless {}, $class;
 
+	$self->{ 'TramNoRunDetailsTable' } = 
+		defined $obj->{ 'TramNoRunDetailsTable' }
+			? $obj->{ 'TramNoRunDetailsTable' }
+			: '';
+
 	for my $a ( @ATTR ) {
 		defined $obj->{ $a} 
 			? $self->{ $a } = $obj->{ $a }
