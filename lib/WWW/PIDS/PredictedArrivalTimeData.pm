@@ -25,7 +25,6 @@ sub new {
 		);
 
 	my @stops = map { WWW::PIDS::NextPredictedStopDetail->new( $_ ) } @{ $obj->{ 'NextPredictedStopsDetailsTable' } };
-	use Data::Dumper; print Dumper( @stops );
 
 	$self->{ 'NextPredictedStopsDetailsTable' } = WWW::PIDS::NextPredictedStopsDetailTable->new( @stops );
 
