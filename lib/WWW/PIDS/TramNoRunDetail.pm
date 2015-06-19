@@ -13,7 +13,6 @@ our @ATTR = qw(AtLayover Available HasDisruption HasSpecialEvent HeadBoardRouteN
 sub new {
 	my ( $class, $obj ) = @_;
 	my $self = bless {}, $class;
-
 	for my $a ( @ATTR ) {
 		defined $obj->{ $a} 
 			? $self->{ $a } = $obj->{ $a }
