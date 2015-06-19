@@ -11,7 +11,12 @@ our @ATTR = qw(NextPredictedStopsDetailsTable TramNoRunDetailsTable);
 
 {
 	no strict 'refs';
-	*$_ = sub { return shift->{ $_ } } for @ATTR;
+
+	for my $m ( @ATTR ) {
+		*{ __PACKAGE__."::$m" } = sub {
+			my $self = shift;
+			return $self->{ $m } }
+	}
 }
 
 sub new {
