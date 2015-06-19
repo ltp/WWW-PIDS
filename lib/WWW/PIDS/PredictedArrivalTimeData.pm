@@ -5,8 +5,9 @@ use warnings;
 
 use WWW::PIDS::TramNoRunDetail;
 use WWW::PIDS::NextPredictedStopDetail;
+use WWW::PIDS::NextPredictedStopsDetailTable;
 
-our @ATTR = qw(TramNoRunDetailsTable NextPredictedStopsDetailsTable);
+our @ATTR = qw(NextPredictedStopsDetailsTable TramNoRunDetailsTable);
 
 {
 	no strict 'refs';
@@ -18,15 +19,15 @@ sub new {
 	my $self = bless {}, $class;
 
 	$self->{ 'TramNoRunDetailsTable' } = 
-		defined $obj->{ 'TramNoRunDetailsTable' }
-			? $obj->{ 'TramNoRunDetailsTable' }
-			: '';
+		( defined $obj->{ 'TramNoRunDetailsTable' }
+			? WWW::PIDS::TramNoRunDetail->new( $obj->{ 'TramNoRunDetailsTable' } )
+			: undef
+		);
 
-	for my $a ( @ATTR ) {
-		defined $obj->{ $a} 
-			? $self->{ $a } = $obj->{ $a }
-			: die "Mandatory parameter $a not supplied in constructor" ;
-	}
+	my @stops = map { WWW::PIDS::NextPredictedStopDetail->new( $_ ) } @{ $obj->{ 'NextPredictedStopsDetailsTable' } };
+	use Data::Dumper; print Dumper( @stops );
+
+	$self->{ 'NextPredictedStopsDetailsTable' } = WWW::PIDS::NextPredictedStopsDetailTable->new( @stops );
 
 	return $self
 }

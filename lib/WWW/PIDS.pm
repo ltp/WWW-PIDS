@@ -65,9 +65,14 @@ our %METHODS = (
 	},
 	GetNextPredictedArrivalTimeAtStopsForTramNo  => {
 		parameters	=> [ { param => 'tramNo',	format => qr/^\d{1,4}$/,	type => 'short' } ],
-		result		=> sub {	return WWW::PIDS::PredictedArrivalTimeData->new( 
-							shift->{diffgram}->{NewDataSet}
+		result		=> sub {	my $n = shift->{diffgram}->{NewDataSet};
+						return ( defined $n 
+							? WWW::PIDS::PredictedArrivalTimeData->new( $n )
+							: undef
 						)
+#						return WWW::PIDS::PredictedArrivalTimeData->new( 
+#							shift->{diffgram}->{NewDataSet}
+#						)
 					}
 	},
 	GetNextPredictedRoutesCollection  => {
