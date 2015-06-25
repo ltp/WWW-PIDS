@@ -66,7 +66,6 @@ our %METHODS = (
 	GetNextPredictedArrivalTimeAtStopsForTramNo  => {
 		parameters	=> [ { param => 'tramNo',	format => qr/^\d{1,4}$/,	type => 'short' } ],
 		result		=> sub {	my $n = shift;
-
 						return ( defined $n and defined $n->{diffgram}->{NewDataSet}
 							? WWW::PIDS::PredictedArrivalTimeData->new( $n->{diffgram}->{NewDataSet} )
 							: undef
@@ -326,7 +325,34 @@ obejcts representing the main routes for the specified stop.
 =head2 GetNextPredictedArrivalTimeAtStopsForTramNo ( tramNo => $tramNo )
 
 Accepts a single mandatory parameter; the tram number for which you wish to
-retrieve the predicted stop arrival time, and returns a L<WWW::PIDS::>
+retrieve the predicted stop arrival time, and returns a 
+L<WWW::PIDS::PredictedArrivalTimeData> object.
+
+=head2 GetNextPredictedRoutesCollection ( stopNo => $stopNo, routeNo => $routeNo, lowFloor => $lowFloor )
+
+Returns real-time predicted arrival times for the specified stop number, route 
+number, and low floor requirement.
+
+This method accepts three mandatory parameters;
+
+=over 4
+
+=item * stopNo
+
+The stop number for which you would like to retrieve predicted arrival times.
+
+=item * routeNo
+
+The route number for which you would like to retrieve predicted arrival times.
+
+=item * lowFloor
+
+A boolean value (either 1 or 0) which if set to true will return data for
+low floor services only.
+
+=back
+
+This method returns an array of L<WWW::PIDS::ScheduledTime> objects.
 
 =head1 NOTES
 
