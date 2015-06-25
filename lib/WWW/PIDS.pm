@@ -254,7 +254,7 @@ default value will be used.  The parameters and their defaults are:
 
 The client GUID that must be passed to the tramTRACKER PIDS web service.  If
 you do not pass this parameter, then on instatiation of a new WWW::PIDS object
-an implicit call will be made to the GetClientGuid() method requesting a new
+an implicit call will be made to the L<GetNewClientGuid()> method requesting a new
 GUID.
 
 =item * ClientType
@@ -353,6 +353,11 @@ low floor services only.
 =back
 
 This method returns an array of L<WWW::PIDS::ScheduledTime> objects.
+
+=head2 GetPlatformStopsByRouteAndDirection ( routeNo => $routeNo, isUpDirection => BOOLEAN )
+
+Accepts two mandatory parameters; the route number and a boolean indicating the
+direction of the service.
 
 =head1 NOTES
 
