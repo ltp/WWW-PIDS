@@ -17,6 +17,7 @@ use WWW::PIDS::RouteNo;
 use WWW::PIDS::ScheduledTime;
 use WWW::PIDS::StopChange;
 use WWW::PIDS::StopInformation;
+use WWW::PIDS::TripSchedule;
 
 our $VERSION	= '0.01';
 our %ATTR	= (
@@ -32,7 +33,6 @@ our $PROXY	= 'http://ws.tramtracker.com.au/pidsservice/pids.asmx';
 
 our %METHODS = (
 	GetDestinationsForAllRoutes => {
-		parameters	=> [],
 		result		=> sub { return map { WWW::PIDS::Destination->new( $_ ) } 
 						@{ shift->{diffgram}->{DocumentElement}->{ListOfDestinationsForAllRoutes} } 
 					}
@@ -52,7 +52,6 @@ our %METHODS = (
 					}
 	},
 	GetMainRoutes => {
-		parameters	=> [],
 		result		=> sub { return map { WWW::PIDS::RouteNo->new( $_ ) } 
 						@{ shift->{diffgram}->{DocumentElement}->{ListOfNonSubRoutes} } 
 					}
@@ -63,7 +62,7 @@ our %METHODS = (
 						@{ shift->{diffgram}->{DocumentElement}->{ListOfMainRoutesAtStop} } 
 					}
 	},
-	GetNextPredictedArrivalTimeAtStopsForTramNo  => {
+	GetNextPredictedArrivalTimeAtStopsForTramNo => {
 		parameters	=> [ { param => 'tramNo',	format => qr/^\d{1,4}$/,	type => 'short' } ],
 		result		=> sub {	my $n = shift;
 						return ( defined $n and defined $n->{diffgram}->{NewDataSet}
@@ -72,7 +71,7 @@ our %METHODS = (
 						)
 					}
 	},
-	GetNextPredictedRoutesCollection  => {
+	GetNextPredictedRoutesCollection => {
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' },
 				     { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
 				     { param => 'lowFloor',	format => qr/^(0|1)$/,		type => 'boolean' } ],
@@ -81,22 +80,21 @@ our %METHODS = (
 					}
 	},
 	GetNewClientGuid  => {
-		parameters	=> [],
 		result		=> sub { return shift }
 	},	
-	GetPlatformStopsByRouteAndDirection  => {
-		parameters	=> [],
-		result		=> sub { print Dumper( @_ ) }
+	'GetPlatformStopsByRouteAndDirection' => {
+		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
+				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
+		result		=> sub { return @_ }
 		#result		=> sub { return map { WWW::PIDS::RoutesCollection->new( $_ ) } @{ shift->{diffgram}->{DocumentElement}->{ToReturn} } }
 	},
 	GetRouteStopsByRoute => {
-		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' }, 
+		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
 				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
-		result		=> sub { print Dumper( shift ) }
+		result		=> sub { my $s = shift; print Dumper( $s ) }
 	},
 	GetRouteSummaries => {
-		parameters	=> [],
-		result		=> sub { print Dumper( shift ) }
+		result		=> sub { return @_ }
 	},
 	GetSchedulesCollection  => {
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' },
@@ -111,11 +109,12 @@ our %METHODS = (
 		parameters	=> [ { param => 'tripID',	format => qr/^\d{1,}$/,		type => 'int' },
 				     { param => 'scheduledDateTime', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
 		#result		=> sub { print Dumper( shift ) }
-		#result		=> sub { return WWW::PIDS::PredictedTime->new( shift->{diffgram}->{DocumentElement}->{SchedulesResultsTable} ) }
+		result		=> sub { return map { WWW::PIDS::TripSchedule->new( $_ ) }
+						@{ shift->{diffgram}->{DocumentElement}->{Table} }
+					}
 	},
 	GetStopInformation  => {
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' } ],
-		#result		=> sub { print Dumper( shift ) }
 		result		=> sub { return WWW::PIDS::StopInformation->new( shift->{diffgram}->{DocumentElement}->{StopInformation} ) }
 	},
 	GetStopsAndRoutesUpdatesSince  => {
@@ -158,6 +157,8 @@ for my $method ( keys %METHODS ) {
 
 sub __validate_parameters {
 	my ( $m, %p ) = @_;
+
+	return 1 if not defined $METHODS{ $m }{ 'parameters' };
 
 	for my $param ( @{ $METHODS{ $m }{ 'parameters' } } ) {
 		defined $p{ $param->{ param } } 
@@ -358,6 +359,55 @@ This method returns an array of L<WWW::PIDS::ScheduledTime> objects.
 
 Accepts two mandatory parameters; the route number and a boolean indicating the
 direction of the service.
+
+This method, although present in the PIDS web service documentation, does not appear to
+be implemented and hence results in a server-side error when invoked.
+
+It is included in this module for consistency and parity.
+
+=head2 GetRouteSummaries ()
+
+Returns a list of summaries for all main routes in the network.
+
+At the time of authoring, the PIDS web service currently returns an empty response for this 
+method, hence this method, whilst being implemented internally, also returns nothing.
+
+It is included in this module for consistency and parity.
+
+=head2 GetSchedulesCollection ( stopNo => $stopNo, routeNo => $routeNo, lowFloor => BOOLEAN, clientRequestDateTime => TIMESTAMP )
+
+This method accepts four mandatory parameters and returns an array of three 
+L<WWW::PIDS::PredictedTime> objects representing the next three scheduled passing times 
+for services with the specified stop number, route number, low floor requirement, day, and time.
+
+The four mandatory parameters are:
+
+=over 4
+
+=item * stopNo
+
+The stop number for which you would like to retrieve scheduled arrival times.
+
+=item * routeNo
+
+The route number for which you would like to retrieve scheduled arrival times.
+
+=item * lowFloor
+
+A boolean value (either 1 or 0) which if set to true will return data for
+low floor services only.
+
+=item * clientRequestDateTime
+
+The date and time representing the start of the period for which you would like to
+retrieve scheduled arrival times in the format:
+
+	YYYY-MM-DDThh:mm:ss
+
+	# Example
+	2015-05-08T09:15:00
+
+=head2 
 
 =head1 NOTES
 
