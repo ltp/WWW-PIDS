@@ -405,9 +405,68 @@ retrieve scheduled arrival times in the format:
 	YYYY-MM-DDThh:mm:ss
 
 	# Example
-	2015-05-08T09:15:00
+	2015-05-08T16:20:00
 
-=head2 
+=back
+
+=head2 GetSchedulesForTrip ( tripID => $tripID, scheduledDateTime => TIMESTAMP )
+
+This method accepts two mandatory parameters and returns an array of
+L<WWW::PIDS::TripSchedule> objects representing the scheduled arrival times pertaining to a route
+for the specified trip ID and scheduled departure date and time. 
+
+To determine the trip ID, use the L<GetSchedulesCollection()> method.
+
+The two mandatory parameters are:
+
+=item * tripID
+
+The trip ID identifying the route for which scheduled arrival times are to be retrieved.
+
+=item * scheduledDateTime
+
+The date and time representing the start of the period for which you would like to
+retrieve scheduled arrival times in the format:
+
+	YYYY-MM-DDThh:mm:ss
+
+	# Example
+	2015-05-08T16:20:00
+
+=back
+
+=head2 GetStopInformation ( stopNo => $stopNo )
+
+Returns a L<WWW::PIDS::StopInformation> object containing information on the specified
+stop ID.  The L<WWW::PIDS::StopInformation> object contains information including the flag 
+stop number, latitude and logitude coordinates, and the suburb name.
+
+This method accepts a single mandatory parameter:
+
+=item stopNo
+
+The 4-digit tracker ID of the stop for which infomration is to be retrieved.
+
+=back
+
+=head2 GetStopsAndRoutesUpdatesSince( dateSince => TIMESTAMP )
+
+Returns a L<WWW::PIDS::CoreDataChanges> object containing a list of routes and 
+tracker IDs whose information have been updated since the date specified in 
+the parameter (dateSince). To obtain detailed information of the updates, use 
+the L<GetStopInformation()>, L<GetListOfStopsByRouteNoAndDirection()>, and 
+L<GetDestinationsForRoute()> methods.
+
+=item * dateSince
+
+The date and time representing the start of the period for which you would like to
+retrieve scheduled arrival times in the format:
+
+	YYYY-MM-DDThh:mm:ss
+
+	# Example
+	2015-05-08T16:20:00
+
 
 =head1 NOTES
 
