@@ -108,7 +108,6 @@ our %METHODS = (
 	GetSchedulesForTrip  => {
 		parameters	=> [ { param => 'tripID',	format => qr/^\d{1,}$/,		type => 'int' },
 				     { param => 'scheduledDateTime', format => qr/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, type => 'dateTime' } ],
-		#result		=> sub { print Dumper( shift ) }
 		result		=> sub { return map { WWW::PIDS::TripSchedule->new( $_ ) }
 						@{ shift->{diffgram}->{DocumentElement}->{Table} }
 					}
@@ -532,7 +531,29 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =back
 
 
-=head1 ACKNOWLEDGEMENTS
+=head1 SEE ALSO
+
+use WWW::PIDS::CoreDataChanges;
+use WWW::PIDS::Destination;
+use WWW::PIDS::ListedStop;
+use WWW::PIDS::NextPredictedStopDetail;
+use WWW::PIDS::PredictedTime;
+use WWW::PIDS::PredictedArrivalTimeData;
+use WWW::PIDS::RouteChange;
+use WWW::PIDS::RouteDestination;
+use WWW::PIDS::RouteNo;
+use WWW::PIDS::ScheduledTime;
+use WWW::PIDS::StopChange;
+use WWW::PIDS::StopInformation;
+use WWW::PIDS::TripSchedule;
+L<WWW::PIDS::CoreDataChanges>
+L<WWW::PIDS::Destination>
+L<WWW::PIDS::ListedStop>
+L<WWW::PIDS::
+L<WWW::PIDS::
+L<WWW::PIDS::
+L<WWW::PIDS::
+L<WWW::PIDS::
 
 
 =head1 LICENSE AND COPYRIGHT
