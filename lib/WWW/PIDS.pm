@@ -533,28 +533,19 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 
 =head1 SEE ALSO
 
-use WWW::PIDS::CoreDataChanges;
-use WWW::PIDS::Destination;
-use WWW::PIDS::ListedStop;
-use WWW::PIDS::NextPredictedStopDetail;
-use WWW::PIDS::PredictedTime;
-use WWW::PIDS::PredictedArrivalTimeData;
-use WWW::PIDS::RouteChange;
-use WWW::PIDS::RouteDestination;
-use WWW::PIDS::RouteNo;
-use WWW::PIDS::ScheduledTime;
-use WWW::PIDS::StopChange;
-use WWW::PIDS::StopInformation;
-use WWW::PIDS::TripSchedule;
 L<WWW::PIDS::CoreDataChanges>
 L<WWW::PIDS::Destination>
 L<WWW::PIDS::ListedStop>
-L<WWW::PIDS::
-L<WWW::PIDS::
-L<WWW::PIDS::
-L<WWW::PIDS::
-L<WWW::PIDS::
-
+L<WWW::PIDS::NextPredictedStopDetail>
+L<WWW::PIDS::PredictedTime>
+L<WWW::PIDS::PredictedArrivalTimeData>
+L<WWW::PIDS::RouteChange>
+L<WWW::PIDS::RouteDestination>
+L<WWW::PIDS::RouteNo>
+L<WWW::PIDS::ScheduledTime>
+L<WWW::PIDS::StopChange>
+L<WWW::PIDS::StopInformation>
+L<WWW::PIDS::TripSchedule>
 
 =head1 LICENSE AND COPYRIGHT
 
