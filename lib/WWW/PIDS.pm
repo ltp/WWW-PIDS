@@ -123,7 +123,7 @@ our %METHODS = (
 						@{ $d->{diffgram}->{dsCoreDataChanges}->{dtRoutesChanges} }; 
 					my @s = map { WWW::PIDS::StopChange->new( $_ ) } 
 						@{ $d->{diffgram}->{dsCoreDataChanges}->{dtStopsChanges} };
-					my $t = $d->{diffgram}->{dsCoreDataChanges}->{dtServerTime};
+					my $t = $d->{diffgram}->{dsCoreDataChanges}->{dtServerTime}->{ServerTime};
 					return WWW::PIDS::CoreDataChanges->new( ServerTime => $t, RouteChanges => \@r, StopChanges => \@s ) 
 					}
 	}
