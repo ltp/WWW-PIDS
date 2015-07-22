@@ -8,7 +8,9 @@ our @ATTR = qw(Action Colour HeadboardRouteNo ID IsMainRoute RouteNo);
 {
 	no strict 'refs';
 	
-	*$_ = sub { return shift->{ $_ } } for ( @ATTR );
+	for my $attr ( @ATTR ) {
+		*$attr = sub { return shift->{ $attr } }
+	}
 }
 
 sub new {
