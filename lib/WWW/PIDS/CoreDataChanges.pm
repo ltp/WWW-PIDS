@@ -42,11 +42,21 @@ core data changes.
 
 =head2 RouteChanges
 
-Returns an array of L<WWW::PIDS::RouteChange> objects 
+Returns an array of L<WWW::PIDS::RouteChange> objects representing route changes
+occuring afterthe dateSince time specified in the call to the L<WWW::PIDS> method
+GetStopsAndRoutesUpdatesSince().
 
-=head2 Method
+=head2 StopChanges
 
-Description
+Returns an array of L<WWW::PIDS::StopChange> objects representing stop changes
+occuring afterthe dateSince time specified in the call to the L<WWW::PIDS> method
+GetStopsAndRoutesUpdatesSince().
+
+=head2 ServerTime
+
+Returns the current server timestamp in the format:
+
+	YYYY-MM-DDThh:mm:ss.ttttttt+TZ
 
 =head1 AUTHOR
 
