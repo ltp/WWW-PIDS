@@ -22,7 +22,7 @@ sub RouteChanges	{ return @{ shift->{RouteChanges} }	}
 
 sub StopChanges		{ return @{ shift->{StopChanges} }	}
 
-sub ServerTime		{ return @{ shift->{ServerTime} }	}
+sub ServerTime		{ return shift->{ServerTime}		}
 
 1;
 
@@ -30,17 +30,19 @@ __END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::CoreDataChanges - Utility class for representing tramTRACKER PIDS 
+core data changes.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::CoreDataChanges is a utility class for representing tramTRACKER PIDS 
+core data changes.
 
 =head1 METHODS
 
-=head2 Method
+=head2 RouteChanges
 
-Description
+Returns an array of L<WWW::PIDS::RouteChange> objects 
 
 =head2 Method
 
@@ -88,8 +90,11 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 
 =back
 
-
 =head1 SEE ALSO
+
+L<WWW::PIDS>
+L<WWW::PIDS::RouteChange>
+L<WWW::PIDS::StopChange>
 
 =head1 LICENSE AND COPYRIGHT
 
