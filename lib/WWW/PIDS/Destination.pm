@@ -34,21 +34,28 @@ __END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::Destination - Utility class for representing tramTRACKER destinations.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::Destination is a utility class for representing tramTRACKER destinations.
+
+A WWW::PIDS::Destination object is returned by calls to the GetDestinationsForAllRoutes()
+method in the L<WWW::PIDS> class.
 
 =head1 METHODS
 
-=head2 Method
+=head2 Destination
 
-Description
+Returns the destination for the route as a human readable location - e.g. "Port Melbourne".
 
-=head2 Method
+=head2 UpStop
 
-Description
+Returns a boolean value of "true" or "false" indicating if the destination is an up stop.
+
+=head2 RouteNo
+
+Returns the route number for the destination.
 
 =head1 AUTHOR
 
