@@ -42,21 +42,37 @@ __END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::ListedStop - Utility class for representing listed stop.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS:: is a utility class for representing abstract listed stop objects as
+returned by invocation of the I<GetListOfStopsByRouteNoAndDirection> method in
+the L<WWW::PIDS> module.
 
 =head1 METHODS
 
-=head2 Method
+=head2 Description
 
-Description
+Returns the listed stop description as a human-readable string representing the 
+stop place name or locality. e.g. 'Lincoln Square' or 'RMIT University'.
 
-=head2 Method
+=head2 Latitude
 
-Description
+Returns the stop latitude.
+
+=head2 Longitude
+
+Returns the stop longitude.
+
+=head2 Name
+
+Returns the stop name as a human-readable string representing a street address.
+e.g. '3 Lincoln Square' or '7 RMIT University'.
+
+=head2 SuburbName
+
+
 
 =head1 AUTHOR
 
