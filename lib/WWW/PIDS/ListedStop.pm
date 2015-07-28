@@ -42,11 +42,11 @@ __END__
 
 =head1 NAME 
 
-WWW::PIDS::ListedStop - Utility class for representing listed stop.
+WWW::PIDS::ListedStop - Utility class for representing tramTRACKER PIDS listed stops.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for representing abstract listed stop objects as
+WWW::PIDS::ListedStop is a utility class for representing abstract listed stop objects as
 returned by invocation of the I<GetListOfStopsByRouteNoAndDirection> method in
 the L<WWW::PIDS> module.
 
@@ -72,7 +72,12 @@ e.g. '3 Lincoln Square' or '7 RMIT University'.
 
 =head2 SuburbName
 
+Returns the suburb name of the stop as a human-readbale string representing the
+suburb name. e.e. 'Carlton' or 'Melbourne City'.
 
+=head2 TID
+
+Returns the Tracker Stop ID of the stop.
 
 =head1 AUTHOR
 
