@@ -30,21 +30,33 @@ __END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::GetNextPredictedArrivalTimeAtStopsForTramNo - Utility class for 
+representing next predicted stop arrival times.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::GetNextPredictedArrivalTimeAtStopsForTramNo is a utility class for 
+representing next predicated stop arrival times as returned by invocation of 
+the I<GetNextPredictedArrivalTimeAtStopsForTramNo> method in the L<WWW::PIDS> 
+module.
+
+Note that B<WWW::PIDS::GetNextPredictedArrivalTimeAtStopsForTramNo> objects
+are logically contained within a L<WWW::PIDS::NextPredictedStopsDetailTable>
+object within the L<WWW::PIDS> module, and each 
+B<WWW::PIDS::GetNextPredictedArrivalTimeAtStopsForTramNo> object represents
+one stop on a tram route.
 
 =head1 METHODS
 
-=head2 Method
+=head2 StopNo
 
-Description
+Returns the stop number for the predicated arrival time.
 
-=head2 Method
+=head2 PredictedArrivalDateTime
 
-Description
+Returns the predicated arrival time for this stop in the format:
+
+	YYYY-MM-DDThh:mm:ss+TZhh:TZmm
 
 =head1 AUTHOR
 
@@ -91,6 +103,7 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+L<WWW::PIDS::NextPredictedStopsDetailTable>
 
 =head1 LICENSE AND COPYRIGHT
 
