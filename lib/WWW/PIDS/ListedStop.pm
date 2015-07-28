@@ -38,8 +38,6 @@ sub new {
 
 __END__
 
-__END__
-
 =head1 NAME 
 
 WWW::PIDS::ListedStop - Utility class for representing tramTRACKER PIDS listed stops.
