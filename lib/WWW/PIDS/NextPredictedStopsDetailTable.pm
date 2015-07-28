@@ -11,33 +11,66 @@ sub new {
 	return $self
 }
 
+sub stops {
+	return @{ $_[0]->{ stops } }
+}
+
 sub first {
-	
 	return @{ $_[0]->{ stops } }[0]
+}
+
+sub last {
+	return @{ $_[0]->{ stops } }[-1]
+}
+
+sub count {
+	return scalar @{ $_[0]->{ stops } }
 }
 
 1;
 
 __END__
-__END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::NextPredictedStopsDetailTable - Utility class for representing next
+next predicted stops detail collections.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::NextPredictedStopsDetailTable is a utility class for representing
+colelctions of next predicted stop information such as those returned as a 
+component of a L<WWW::PIDS::PredictedArrivalTimeData> object via an
+invocation of the I<GetNextPredictedArrivalTimeAtStopsForTramNo> method in the 
+L<WWW::PIDS> module.
+
+Note that a B<WWW::PIDS::NextPredictedStopsDetailTable> object is little more
+than an in-order of L<WWW::PIDS::NextPredictedStopDetail> objects.
+
+An B<WWW::PIDS::NextPredictedStopsDetailTable> object is usually contained 
+within a L<WWW::PIDS::PredictedArrivalTimeData> object where it is accessible
+via invocation of the I<NextPredictedStopsDetailsTable> method in that module.
 
 =head1 METHODS
 
-=head2 Method
+=head2 stops
 
-Description
+Returns all predicted stops as an in-order list of 
+L<WWW::PIDS::NextPredictedStopDetail> objects.  The order of the stop represents
+the in-order transit of the stops by the service.
 
-=head2 Method
+=head2 count
 
-Description
+Returns the number of L<WWW::PIDS::NextPredictedStopDetail> objects in the table.
+
+=head2 first
+
+Returns the first L<WWW::PIDS::NextPredictedStopDetail> from the table.
+
+=head2 last
+
+Returns the last L<WWW::PIDS::NextPredictedStopDetail> from the table.
+
 
 =head1 AUTHOR
 
@@ -84,6 +117,8 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+L<WWW::PIDS::NextPredictedStopDetail>
+L<WWW::PIDS::PredictedArrivalTimeData>
 
 =head1 LICENSE AND COPYRIGHT
 
