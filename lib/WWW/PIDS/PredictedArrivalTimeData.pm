@@ -39,25 +39,30 @@ sub new {
 1;
 
 __END__
-__END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::PredictedArrivalTimeData - Utility class for representing predicted 
+arrival time data for the tramTRACKER PIDS service.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+B<WWW::PIDS::PredictedArrivalTimeData> is a utility class for representing
+predicted arrival time data such as that returned by an invocation of the
+I<GetNextPredictedArrivalTimeAtStopsForTramNo> method in the L<WWW::PIDS>
+module.
 
 =head1 METHODS
 
-=head2 Method
+=head2 NextPredictedStopsDetailsTable ()
 
-Description
+Returns a L<WWW::PIDS::NextPredictedStopsDetailTable> object containing the
+next predicted stop arrival time information for the specified service.
 
-=head2 Method
+=head2 TramNoRunDetailsTable ()
 
-Description
+Returns a L<WWW::PIDS::TramNoRunDetail> object containing the tram details
+for the specified service.
 
 =head1 AUTHOR
 
@@ -104,6 +109,9 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+L<WWW::PIDS::TramNoRunDetail>
+L<WWW::PIDS::NextPredictedStopDetail>
+L<WWW::PIDS::NextPredictedStopsDetailTable>
 
 =head1 LICENSE AND COPYRIGHT
 
