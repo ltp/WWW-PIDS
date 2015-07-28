@@ -35,26 +35,98 @@ sub new {
 
 __END__
 
-
-__END__
-
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::PredictedTime - Utility class for representing predicted arrival times
+for the PIDS tramTRACKER service.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::PredictedTime is a utility class for representing predicted arrival 
+times for the PIDS tramTRACKER service.
 
 =head1 METHODS
 
-=head2 Method
+=head2 AirConditioned
 
-Description
+Returns a boolean value ('true' or 'false') indicating if the service is 
+air-conditioned.
 
-=head2 Method
+=head2 Destination
 
-Description
+Returns the end of line destination for the service as a human-readable 
+location. e.g. 'East Coburg' or 'Moreland'.
+
+=head2 Deviation
+
+Returns a value indicating the time deviation of the predicated arrival time
+from the scheduled arrival time.
+
+=head2 DisplayAC
+
+Returns a boolean value ('true' or 'false') indicating if the service displays
+air-conditioned status.
+
+=head2 HasDisruption
+
+Returns a boolean value ('true' or 'false') indicating if the service has a
+disruption.
+
+=head2 HasSpecialEvent
+
+Returns a boolean value ('true' or 'false') indicating if the service is 
+scheduled for a special event.
+
+=head2 HeadboardRouteNo
+
+Returns the headboard route number.
+
+=head2 InternalRouteNo
+
+Returns the internal route number.
+
+=head2 IsLowFloorTram
+
+Returns a boolean value ('true' or 'false') indicating if the service is a low-
+floor service.
+
+=head2 IsTTAvailable
+
+Returns a boolean value ('true' or 'false') indicating if the service has time-
+table information available.
+
+=head2 PredictedArrivalDateTime
+
+Returns the predicted arrival timestamp of the service in the format:
+
+	YYYY-MM-DDThh:mm:ss+TZhh:TZmm
+
+=head2 PredictionType
+
+returns the predicted arrival time type.
+
+=head2 RequestDateTime
+
+Returns the client-provided timestamp for the request (i.e. the value of the
+I<clientRequestDateTime> parameter in the invocating method) using the format:
+
+	YYYY-MM-DDThh:mm:ss+TZhh:TZmm
+	
+=head2 RouteNo
+
+Returns the route number of the service.
+
+=head2 SpecialEventMessage
+
+Returns the special event message.
+
+=head2 TripID
+
+Returns the tramTRACKER trip ID.
+
+=head2 VehicleNo
+
+Returns the service vehicle number.
 
 =head1 AUTHOR
 
@@ -101,6 +173,7 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+L<WWW::PIDS::ScheduledTime>
 
 =head1 LICENSE AND COPYRIGHT
 
