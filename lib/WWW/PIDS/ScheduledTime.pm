@@ -29,18 +29,39 @@ sub new {
 
 __END__
 
-
-__END__
-
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::ScheduledTime - Utility class for representing tramTRACKER PIDS 
+scheduled time objects.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::ScheduledTime is a utility class for representing tramTRACKER 
+PIDS time objects.
+
+WWW::PIDS::ScheduledTime objects are returned by invocation of the
+I<GetNextPredictedRoutesCollection()> method in the L<WWW::PIDS> module.
 
 =head1 METHODS
+
+=head2 AirConditioned
+
+Returns a boolean value ('true' or 'false') indicating if the 
+
+=head2 Destination
+=head2 DisplayAC
+=head2 HasDisruption
+=head2 HasSpecialEvent
+=head2 HeadboardRouteNo
+=head2 InternalRouteNo
+=head2 IsLowFloorTram
+=head2 IsTTAvailable
+=head2 PredictedArrivalDateTime
+=head2 RequestDateTime
+=head2 RouteNo
+=head2 SpecialEventMessage
+=head2 VehicleNo
+
 
 =head2 Method
 
