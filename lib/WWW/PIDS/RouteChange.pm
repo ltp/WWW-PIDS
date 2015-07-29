@@ -29,25 +29,42 @@ sub new {
 1;
 
 __END__
-__END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::RouteChange - Utility class for representing tramTRACKER route changes.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::RouteChange is a utility class for representing tramTRACKER route 
+changes as returnd by an invocation of the I<RouteChanges()> method of a
+L<WWW::PIDS::CoreDataChanges> object.
 
 =head1 METHODS
 
-=head2 Method
+=head2 Action
 
-Description
+A string value indicating the route change action type; e.g. 'ACTION', 'UPDATE', etc.
 
-=head2 Method
+=head2 Colour
 
-Description
+A string value indicating the route change color type; e.g. 'Yellow', 'Green', etc.
+
+=head2 HeadboardRouteNo
+
+An integer representing the route headboard number.
+
+=head2 ID
+
+The route change identifier.
+
+=head2 IsMainRoute
+
+A boolean ('true' or 'false') indicating if the route change is for a main route.
+
+=head2 RouteNo
+
+The route number.
 
 =head1 AUTHOR
 
@@ -94,6 +111,8 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+L<WWW::PIDS::StopChange>
+L<WWW::PIDS::CoreDataChanges>
 
 =head1 LICENSE AND COPYRIGHT
 
