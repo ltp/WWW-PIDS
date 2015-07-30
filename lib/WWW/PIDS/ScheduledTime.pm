@@ -46,30 +46,70 @@ I<GetNextPredictedRoutesCollection()> method in the L<WWW::PIDS> module.
 
 =head2 AirConditioned
 
-Returns a boolean value ('true' or 'false') indicating if the 
+Returns a boolean value ('true' or 'false') indicating if the service is
+air-conditioned.
 
 =head2 Destination
+
+Returns a string containing the service destination. e.g. 'Moreland' or
+'East Coburg'.
+
 =head2 DisplayAC
+
+Returns a boolean value ('true' or 'false') indicating if the air-conditioned
+status is displayed.
+
 =head2 HasDisruption
+
+Returns a boolean value ('true' or 'false') indicating if the service is
+currently reporting a disruption.
+
 =head2 HasSpecialEvent
+
+Returns a boolean value ('true' or 'false') indicating if the service is
+currently running for a special event.
+
 =head2 HeadboardRouteNo
+
+Returns the service head-board displayed route number.
+
 =head2 InternalRouteNo
+
+Returns the service internal route number.
+
 =head2 IsLowFloorTram
+
+Returns a boolean value ('true' or 'false') indicating if the service is
+a low-floor tram.
+
 =head2 IsTTAvailable
+
+Returns a boolean value ('true' or 'false') indicating if time-tabling
+information is available for the service.
+
 =head2 PredictedArrivalDateTime
+
+Returns the predicated arrival timestamp of the service using the format:
+
+	YYYY-MM-DDThh:mm:ss+TZhh:TZmm
+
 =head2 RequestDateTime
+
+Returns a timestamp at which the request was issued in the format:
+
+	YYYY-MM-DDThh:mm:ss+TZhh:TZss
+
 =head2 RouteNo
+
+Returns the service route number.
+
 =head2 SpecialEventMessage
+
+Returns the special event message.
+
 =head2 VehicleNo
 
-
-=head2 Method
-
-Description
-
-=head2 Method
-
-Description
+Returns the vehicle number of tram.
 
 =head1 AUTHOR
 
