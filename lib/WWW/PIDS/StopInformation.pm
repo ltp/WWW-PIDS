@@ -27,21 +27,36 @@ sub new {
 1;
 
 __END__
-__END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::StopInformation - Utility class for representing tramTRACKER PIDS
+stop information objects.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::StopInformation is a utility class for representing tramTRACKERS
+PIDS stop information objects as returns by invocations of the 
+I<GetStopInformation()> method in the L<WWW::PIDS> module.
 
 =head1 METHODS
 
-=head2 Method
+=head2 CityDirection
 
-Description
+Returns the 
+
+=head2 FlagStopNo
+=head2 HasConnectingBuses
+=head2 HasConnectingTrains
+=head2 HasConnectingTrams
+=head2 IsCityStop
+=head2 IsPlatformStop
+=head2 Latitude
+=head2 Longitude
+=head2 StopLength
+=head2 StopName
+=head2 SuburbName
+=head2 Zones
 
 =head2 Method
 
