@@ -27,25 +27,26 @@ sub new {
 1;
 
 __END__
-__END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::Stop - Utility class for representing tramTRACKER PIDS stop changes.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS:: is a utility class for representing tramTRACKER PIDS stop changes
+as returned by the I<StopChange()> method in a L<WWW::PIDS::CoreDataChanges>
+object.
 
 =head1 METHODS
 
-=head2 Method
+=head2 Action
 
-Description
+Returns the stop change action type. e.g. 'UPDATE', 'STOP', etc.
 
-=head2 Method
+=head2 StopNo
 
-Description
+Returns the affected stop number.
 
 =head1 AUTHOR
 
@@ -92,6 +93,7 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+L<WWW::PIDS::WWW::PIDS::CoreDataChanges>
 
 =head1 LICENSE AND COPYRIGHT
 
