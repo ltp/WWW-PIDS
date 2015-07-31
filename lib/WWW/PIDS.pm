@@ -14,6 +14,7 @@ use WWW::PIDS::PredictedArrivalTimeData;
 use WWW::PIDS::RouteChange;
 use WWW::PIDS::RouteDestination;
 use WWW::PIDS::RouteNo;
+use WWW::PIDS::RouteSummary;
 use WWW::PIDS::ScheduledTime;
 use WWW::PIDS::StopChange;
 use WWW::PIDS::StopInformation;
@@ -92,10 +93,12 @@ our %METHODS = (
 	GetRouteStopsByRoute => {
 		parameters	=> [ { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
 				     { param => 'isUpDirection',format => qr/^(0|1)$/,		type => 'boolean' } ],
-		result		=> sub { my $s = shift; print Dumper( $s ) }
+		result		=> sub { return @_ }
 	},
 	GetRouteSummaries => {
-		result		=> sub { return @_ }
+		result		=> sub { return map { WWW::PIDS::RouteSummary->new( $_ ) }
+						@{ shift->{diffgram}->{DocumentElement}->{RouteSummaries} }
+					}
 	},
 	GetSchedulesCollection  => {
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' },
