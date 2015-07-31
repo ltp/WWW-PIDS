@@ -27,26 +27,39 @@ sub new {
 
 __END__
 
-
-__END__
-
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::TripSchedule - Utility class for representing tramTRACKER PIDS trip 
+schedule objects.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::TripSchedule is a utility class for representing tramTRACKER PIDS
+trip schedule objects as returned via invocation of the I<GetSchedulesForTrip>
+method in the L<WWW::PIDS> module.
+
+Logically, each TripSchedule object represents a scheduled stop for a specified
+service.
 
 =head1 METHODS
 
-=head2 Method
+=head2 ScheduledArrivalDateTime
 
-Description
+Returns the scheduled arrival time of the service using the format:
 
-=head2 Method
+	YYYY-HH-MMThh:mm:ss+TZhh:TZmm
 
-Description
+=head2 StopNo
+
+Returns the stop number of the scheduled service.
+
+=head2 Time
+
+Returns the scheduled arrival time of the service as the number of seconds
+since midnight. 
+
+e.g. an object with a I<ScheduledArrivalDateTime> value of 
+2015-07-16T15:58:00+10:00 would have a I<Time> value of 57480.
 
 =head1 AUTHOR
 
