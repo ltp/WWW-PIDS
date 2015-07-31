@@ -23,15 +23,17 @@ sub DownDestination	{ return $_[0]->{ DownDestination }	}
 1;
 
 __END__
-__END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::RouteDestination - Utility class for representing tramTRACKER PIDS
+route destination objects.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::RouteDestination is a utility class for representing tramTRACKER
+PIDS route destination objects as returns by invocation of the 
+I<GetRouteSummaries>, or 
 
 =head1 METHODS
 
