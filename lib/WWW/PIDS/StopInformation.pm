@@ -43,24 +43,62 @@ I<GetStopInformation()> method in the L<WWW::PIDS> module.
 
 =head2 CityDirection
 
-Returns the 
+Returns a human-readable string indicating the direction of the CDB relative
+to the stop. e.g. 'towards Flinders Street'.
 
 =head2 FlagStopNo
+
+Returns the flag stop number.
+
 =head2 HasConnectingBuses
+
+Returns a boolean value ('true' or 'false') indicating if the stop has
+connecting bus services.
+
 =head2 HasConnectingTrains
+
+Returns a boolean value ('true' or 'false') indicating if the stop has
+connecting train services.
+
 =head2 HasConnectingTrams
+
+Returns a boolean value ('true' or 'false') indicating if the stop has 
+connecting train services.
+
 =head2 IsCityStop
+
+Returns a boolean value ('true' or 'false') indicating if the stop is a city
+stop.
+
 =head2 IsPlatformStop
+
+Returns a boolean value ('true' or 'false') indicating if the stop is a
+platform stop.
+
 =head2 Latitude
+
+Returns the latitude of the stop.
+
 =head2 Longitude
+
+Returns the longitude of the stop.
+
 =head2 StopLength
+
+Returns the length of the stop.
+
 =head2 StopName
+
+Returns the stop name. e.g. 'Bourke Street Mall & Elizabeth St'.
+
 =head2 SuburbName
+
+Returns the name of the suburb in which the stop is located. e.g. 'Melbourne City'.
+
 =head2 Zones
 
-=head2 Method
-
-Description
+Returns a comma-separated list of the PTV zones in which the stop is located.
+e.g. '0,1'.
 
 =head1 AUTHOR
 
