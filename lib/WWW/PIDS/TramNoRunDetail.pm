@@ -25,25 +25,54 @@ sub new {
 1;
 
 __END__
-__END__
 
 =head1 NAME 
 
-WWW::PIDS:: - Utility class for representing
+WWW::PIDS::TramNoRunDetail - Utility class for representing tram service run
+details.
 
 =head1 DESCRIPTION
 
-WWW::PIDS:: is a utility class for
+WWW::PIDS::TRAMNoRunDetail is a utility class for representing tram service
+run details as returned by invocation of the I<TramNoRunDetailsTable()>
+method in the L<WWW::PIDS::PredictedArrivalTimeData> module.
 
 =head1 METHODS
 
-=head2 Method
+=head2 AtLayover
 
-Description
+Returns a boolean ('true' or 'false') indicating if the service is at a layover.
 
-=head2 Method
+=head2 Available
 
-Description
+Returns a boolean ('true' or 'false') indicating if the service is available.
+
+=head2 HasDisruption
+
+Returns a boolean ('true' or 'false') indicating if the service is reporting a
+disruption.
+
+=head2 HasSpecialEvent
+
+Returns a boolean ('true' or 'false') indicating if the service has a special 
+event.
+
+=head2 HeadBoardRouteNo
+
+returns the headboard route number.
+
+=head2 RouteNo
+
+Returns the service route number.
+
+=head2 Up
+
+Returns a boolean ('true' or 'false') indicating if the service is travveling
+in the up direction.
+
+=head2 VehicleNo
+
+Returns the tram vehicle number.
 
 =head1 AUTHOR
 
@@ -90,6 +119,7 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+L<WWW::PIDS::PredictedArrivalTimeData>
 
 =head1 LICENSE AND COPYRIGHT
 
