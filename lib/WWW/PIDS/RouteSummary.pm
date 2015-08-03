@@ -3,22 +3,28 @@ package WWW::PIDS::RouteSummary;
 use strict;
 use warnings;
 
-sub new {
-	my ( $class, %p ) = @_;
-	my $self = bless {} , $class;
+our @ATTR = qw(Description DownDestination HasLowFloor HeadboardRouteNo 
+InternalRouteNo IsMainRoute LastModified MainRouteNo RouteNo 
+UpDestination);
 
-	for my $param ( qw(UpDestination DownDestination) ) {
-		defined $p{ $param }
-			? $self->{ $param } = $p{ $param }
-			: die "Mandatory parameter $param not provided to constructor in " . __PACKAGE__ ;
-	}
-	
-	return $self
+{
+        no strict 'refs';
+    
+        *$_ = sub { return shift->{ $_ } } for ( @ATTR );
 }
 
-sub UpDestination	{ return $_[0]->{ UpDestination }	}
+sub new {
+        my ( $class, $obj ) = @_; 
+        my $self = bless {} , $class;
 
-sub DownDestination	{ return $_[0]->{ DownDestination }	}
+        for my $a ( @ATTR ) { 
+                defined $obj->{ $a }
+                        ? $self->{ $a } = $obj->{ $a }
+                        : die "Mandatory parameter $a not supplied to constructor"
+        }
+
+        return $self
+}
 
 1;
 
@@ -26,24 +32,60 @@ __END__
 
 =head1 NAME 
 
-WWW::PIDS::RouteDestination - Utility class for representing tramTRACKER PIDS
-route destination objects.
+WWW::PIDS::RouteSummary - Utility class for representing tramTRACKER PIDS
+route summary objects.
 
 =head1 DESCRIPTION
 
-WWW::PIDS::RouteDestination is a utility class for representing tramTRACKER
-PIDS route destination objects as returns by invocation of the 
-I<GetRouteSummaries>, or 
+WWW::PIDS::RouteSummary is a utility class for representing tramTRACKER
+PIDS route summary objects as returns by invocation of the I<GetRouteSummaries>
+method in the L<WWW::PIDS> module.
 
 =head1 METHODS
 
-=head2 Method
+=head2 Description
 
-Description
+Returns the route description. e.g. 'East Coburg - South Melbourne Beach'.
 
-=head2 Method
+=head2 DownDestination
 
-Description
+Returns the route's down destination. e.g. 'East Coburg'.
+
+=head2 HasLowFloor
+
+Returns a boolean value ('true' or 'false') indicating if the route is a low-
+floor service.
+
+=head2 HeadboardRouteNo
+
+Returns the headboard route number.
+
+=head2 InternalRouteNo
+
+Returns the internal route number.
+
+=head2 IsMainRoute
+
+Returns a boolean value ('true' or 'false') indicating if the 
+
+=head2 LastModified
+
+Returns a timestamp indicating the date and time at which the route summary was
+last modified in the format:
+
+	YYYY-MM-DDThh:mm:ss.uuu+TZhh:TZmm
+
+=head2 MainRouteNo
+
+Returns the main route number.
+
+=head2 RouteNo
+
+Returns the route number.
+
+=head2 UpDestination
+
+Returns the route up destination. e.g. 'South Melbourne Beach'.
 
 =head1 AUTHOR
 
