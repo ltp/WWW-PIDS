@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use WWW::PIDS;
-use Test::More tests => 6;
+use Test::More tests => 7;
 
 my $p = WWW::PIDS->new();
 
