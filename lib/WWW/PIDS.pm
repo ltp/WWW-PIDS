@@ -68,6 +68,8 @@ our %METHODS = (
 		parameters	=> [ { param => 'tramNo',	format => qr/^\d{1,4}$/,	type => 'short' } ],
 		result		=> sub {	my $n = shift;
 						return unless defined $n;
+						return unless exists $n->{diffgram};
+						return unless defined $n->{diffgram}->{NewDataSet};
 						return ( defined $n->{diffgram}->{NewDataSet}
 							? WWW::PIDS::PredictedArrivalTimeData->new( $n->{diffgram}->{NewDataSet} )
 							: undef
