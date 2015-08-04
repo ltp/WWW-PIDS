@@ -66,7 +66,8 @@ our %METHODS = (
 	},
 	GetNextPredictedArrivalTimeAtStopsForTramNo => {
 		parameters	=> [ { param => 'tramNo',	format => qr/^\d{1,4}$/,	type => 'short' } ],
-		result		=> sub {	my $n = shift;
+		result		=> sub {	return @_; my $n = shift;
+						print Dumper( $n ); return;
 						return unless defined $n;
 						return unless exists $n->{diffgram};
 						return unless defined $n->{diffgram}->{NewDataSet};
@@ -372,6 +373,26 @@ This method, although present in the PIDS web service documentation, does not ap
 be implemented and hence results in a server-side error when invoked.
 
 It is included in this module for consistency and parity.
+
+=head2 GetRouteStopsByRoute ( routeNo => $routeNo, isUpDirection => $isUpDirection )
+
+Returns route stop information for the specified route in the specified 
+direction. 
+
+This method accepts two mandatory parameters:
+
+=over 4
+
+=item * routeNo
+
+The route number for which stop information should be returned.
+
+=item * isUpDirection
+
+A boolean value (either 1 or 0) indicating if the route stop information should
+be returned for the "up" direction of the route.
+
+This method returns an array of L<WWW::PIDS::RouteStop> objects.
 
 =head2 GetRouteSummaries ()
 
