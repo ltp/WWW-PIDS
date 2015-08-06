@@ -32,18 +32,20 @@ route destination objects.
 =head1 DESCRIPTION
 
 WWW::PIDS::RouteDestination is a utility class for representing tramTRACKER
-PIDS route destination objects as returns by invocation of the 
-I<GetRouteSummaries>, or 
+PIDS route destination objects as returned by an invocation of the 
+I<GetDestinationsForRoute()> in the L<WWW::PIDS> module.
 
 =head1 METHODS
 
-=head2 Method
+=head2 DownDestination
 
-Description
+Returns the destination of the route in the "down" direction as a string.
+e.g. 'East Coburg'.
 
-=head2 Method
+=head2 UpDestination
 
-Description
+Returns the destination of the route in the "up" direction as a string.
+e.g. 'Sth Melb Beach'.
 
 =head1 AUTHOR
 
