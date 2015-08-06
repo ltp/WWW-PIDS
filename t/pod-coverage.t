@@ -13,10 +13,10 @@ if ( $@ ) {
 	plan skip_all => "Pod::Coverage $min_pc required for testing POD coverage"
 }
 else {
-	plan tests => 42
+	plan tests => 16
 }
 
-pod_coverage_ok( 'WWW:PIDS' );
+pod_coverage_ok( 'WWW::PIDS' );
 pod_coverage_ok( 'WWW::PIDS::CoreDataChanges',		{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'WWW::PIDS::Destination',		{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'WWW::PIDS::ListedStop',		{ also_private => [ 'new', 'TurnMessage', 'TurnType' ] } );

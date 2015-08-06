@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use SOAP::Lite;
-use Data::Dumper;
 use WWW::PIDS::CoreDataChanges;
 use WWW::PIDS::Destination;
 use WWW::PIDS::ListedStop;
@@ -66,9 +65,7 @@ our %METHODS = (
 	},
 	GetNextPredictedArrivalTimeAtStopsForTramNo => {
 		parameters	=> [ { param => 'tramNo',	format => qr/^\d{1,4}$/,	type => 'short' } ],
-		result		=> sub {	return @_; my $n = shift;
-						print Dumper( $n ); return;
-						return unless defined $n;
+		result		=> sub {	my $n = shift;
 						return unless exists $n->{diffgram};
 						return unless defined $n->{diffgram}->{NewDataSet};
 						return ( defined $n->{diffgram}->{NewDataSet}
@@ -394,6 +391,8 @@ be returned for the "up" direction of the route.
 
 This method returns an array of L<WWW::PIDS::RouteStop> objects.
 
+=back
+
 =head2 GetRouteSummaries ()
 
 Returns a list of summaries for all main routes in the network.
@@ -448,6 +447,8 @@ To determine the trip ID, use the L<GetSchedulesCollection()> method.
 
 The two mandatory parameters are:
 
+=over 4
+
 =item * tripID
 
 The trip ID identifying the route for which scheduled arrival times are to be retrieved.
@@ -472,6 +473,8 @@ stop number, latitude and logitude coordinates, and the suburb name.
 
 This method accepts a single mandatory parameter:
 
+=over 4
+
 =item stopNo
 
 The 4-digit tracker ID of the stop for which infomration is to be retrieved.
@@ -486,6 +489,8 @@ the parameter (dateSince). To obtain detailed information of the updates, use
 the L<GetStopInformation()>, L<GetListOfStopsByRouteNoAndDirection()>, and 
 L<GetDestinationsForRoute()> methods.
 
+=over 4
+
 =item * dateSince
 
 The date and time representing the start of the period for which you would like to
@@ -496,6 +501,7 @@ retrieve scheduled arrival times in the format:
 	# Example
 	2015-05-08T16:20:00
 
+=back
 
 =head1 NOTES
 
