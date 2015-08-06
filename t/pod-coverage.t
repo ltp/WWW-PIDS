@@ -19,7 +19,7 @@ else {
 pod_coverage_ok( 'WWW:PIDS' );
 pod_coverage_ok( 'WWW::PIDS::CoreDataChanges',		{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'WWW::PIDS::Destination',		{ also_private => [ 'new' ] } );
-pod_coverage_ok( 'WWW::PIDS::ListedStop',		{ also_private => [ 'new' ] } );
+pod_coverage_ok( 'WWW::PIDS::ListedStop',		{ also_private => [ 'new', 'TurnMessage', 'TurnType' ] } );
 pod_coverage_ok( 'WWW::PIDS::NextPredictedStopDetail',	{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'WWW::PIDS::PredictedTime',		{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'WWW::PIDS::PredictedArrivalTimeData',	{ also_private => [ 'new' ] } );
