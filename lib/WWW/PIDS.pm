@@ -226,11 +226,11 @@ WWW::PIDS - Perl API for the tramTRACKER PIDS Web Service
 
 WWW::PIDS is a Perl API to the PIDS tramTRACKER web service.
 
-The tramTRACKER PIDS web service "is a public Web Service that provides a set 
+The tramTRACKER PIDS web service I<"is a public Web Service that provides a set 
 of Web Methods to request real-time and scheduled tram arrival times, as well 
-as stops and routes information."
+as stops and routes information.">.
 
-You can find more infomration on the tramTRACKER PIDS web service here
+You can find more information on the tramTRACKER PIDS web service here
 L<http://ws.tramtracker.com.au/pidsservice/pids.asmx>.
 
 This Perl API aims to implement a one-to-one binding with the methods provided
@@ -248,7 +248,7 @@ may prefer the WWW::PIDS::Sugar package.
 
 =head1 METHODS
 
-=head2 new ( %ARGS )
+=head2 new (%ARGS)
 
 Constructor - creates a new WWW::PIDS object.
 
@@ -267,7 +267,7 @@ GUID.
 =item * ClientType
 
 A string identifying the client application type.  If you require a dedicated
-client type, contact feedback@yarratrams.com.au.
+client type, contact C<< <feedback@yarratrams.com.au> >>.
 
 The default value for this parameter is 'WEBPID'.
 
@@ -300,13 +300,13 @@ Returns a list of destinations for all routes in the network.
 
 The return type is an array of L<WWW::PIDS::Destination> objects.
 
-=head2 GetDestinationsForRoute ( routeNo => SCALAR )
+=head2 GetDestinationsForRoute (routeNo => $routeNo)
 
 Accepts a single mandatory parameter; the route number - and 
 returns a L<WWW::PIDS::RouteDestination> object containing route
 destination information for the specified route.
 
-=head2 GetListOfStopsByRouteNoAndDirection ( routeNo => SCALAR, isUpDirection => BOOLEAN )
+=head2 GetListOfStopsByRouteNoAndDirection (routeNo => $routeNo, isUpDirection => BOOLEAN)
 
 Accepts two mandatory parameters; the route number, and an boolean value
 (either 0 or 1) indicating if the direction of travel is in the "up" direction
@@ -323,19 +323,19 @@ specifities of this module including naming of parameters.
 Returns an array of L<WWW::PIDS::RouteNo> objects containing information on
 all main routes.
 
-=head2 GetMainRoutesForStop ( stopNo => SCALAR )
+=head2 GetMainRoutesForStop (stopNo => $stopNo)
 
 Accepts a single mandatory parameter; the stop number for which you wish to
 retrieve a list of main routes, and returns an array of L<WWW::PIDS::RouteNo>
 obejcts representing the main routes for the specified stop.
 
-=head2 GetNextPredictedArrivalTimeAtStopsForTramNo ( tramNo => $tramNo )
+=head2 GetNextPredictedArrivalTimeAtStopsForTramNo (tramNo => $tramNo)
 
 Accepts a single mandatory parameter; the tram number for which you wish to
 retrieve the predicted stop arrival time, and returns a 
 L<WWW::PIDS::PredictedArrivalTimeData> object.
 
-=head2 GetNextPredictedRoutesCollection ( stopNo => $stopNo, routeNo => $routeNo, lowFloor => $lowFloor )
+=head2 GetNextPredictedRoutesCollection (stopNo => $stopNo, routeNo => $routeNo, lowFloor => BOOLEAN)
 
 Returns real-time predicted arrival times for the specified stop number, route 
 number, and low floor requirement.
@@ -361,7 +361,7 @@ low floor services only.
 
 This method returns an array of L<WWW::PIDS::ScheduledTime> objects.
 
-=head2 GetPlatformStopsByRouteAndDirection ( routeNo => $routeNo, isUpDirection => BOOLEAN )
+=head2 GetPlatformStopsByRouteAndDirection (routeNo => $routeNo, isUpDirection => BOOLEAN)
 
 Accepts two mandatory parameters; the route number and a boolean indicating the
 direction of the service.
@@ -371,7 +371,7 @@ be implemented and hence results in a server-side error when invoked.
 
 It is included in this module for consistency and parity.
 
-=head2 GetRouteStopsByRoute ( routeNo => $routeNo, isUpDirection => $isUpDirection )
+=head2 GetRouteStopsByRoute (routeNo => $routeNo, isUpDirection => $isUpDirection)
 
 Returns route stop information for the specified route in the specified 
 direction. 
@@ -402,7 +402,7 @@ method, hence this method, whilst being implemented internally, also returns not
 
 It is included in this module for consistency and parity.
 
-=head2 GetSchedulesCollection ( stopNo => $stopNo, routeNo => $routeNo, lowFloor => BOOLEAN, clientRequestDateTime => TIMESTAMP )
+=head2 GetSchedulesCollection (stopNo => $stopNo, routeNo => $routeNo, lowFloor => BOOLEAN, clientRequestDateTime => TIMESTAMP)
 
 This method accepts four mandatory parameters and returns an array of three 
 L<WWW::PIDS::PredictedTime> objects representing the next three scheduled passing times 
@@ -437,7 +437,7 @@ retrieve scheduled arrival times in the format:
 
 =back
 
-=head2 GetSchedulesForTrip ( tripID => $tripID, scheduledDateTime => TIMESTAMP )
+=head2 GetSchedulesForTrip (tripID => $tripID, scheduledDateTime => TIMESTAMP)
 
 This method accepts two mandatory parameters and returns an array of
 L<WWW::PIDS::TripSchedule> objects representing the scheduled arrival times pertaining to a route
@@ -465,7 +465,7 @@ retrieve scheduled arrival times in the format:
 
 =back
 
-=head2 GetStopInformation ( stopNo => $stopNo )
+=head2 GetStopInformation (stopNo => $stopNo)
 
 Returns a L<WWW::PIDS::StopInformation> object containing information on the specified
 stop ID.  The L<WWW::PIDS::StopInformation> object contains information including the flag 
@@ -481,7 +481,7 @@ The 4-digit tracker ID of the stop for which infomration is to be retrieved.
 
 =back
 
-=head2 GetStopsAndRoutesUpdatesSince( dateSince => TIMESTAMP )
+=head2 GetStopsAndRoutesUpdatesSince (dateSince => TIMESTAMP)
 
 Returns a L<WWW::PIDS::CoreDataChanges> object containing a list of routes and 
 tracker IDs whose information have been updated since the date specified in 
@@ -570,17 +570,29 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS::CoreDataChanges>
+
 L<WWW::PIDS::Destination>
+
 L<WWW::PIDS::ListedStop>
+
 L<WWW::PIDS::NextPredictedStopDetail>
+
 L<WWW::PIDS::PredictedTime>
+
 L<WWW::PIDS::PredictedArrivalTimeData>
+
 L<WWW::PIDS::RouteChange>
+
 L<WWW::PIDS::RouteDestination>
+
 L<WWW::PIDS::RouteNo>
+
 L<WWW::PIDS::ScheduledTime>
+
 L<WWW::PIDS::StopChange>
+
 L<WWW::PIDS::StopInformation>
+
 L<WWW::PIDS::TripSchedule>
 
 =head1 LICENSE AND COPYRIGHT

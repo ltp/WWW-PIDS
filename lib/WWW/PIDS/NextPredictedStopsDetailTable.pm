@@ -117,7 +117,9 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+
 L<WWW::PIDS::NextPredictedStopDetail>
+
 L<WWW::PIDS::PredictedArrivalTimeData>
 
 =head1 LICENSE AND COPYRIGHT

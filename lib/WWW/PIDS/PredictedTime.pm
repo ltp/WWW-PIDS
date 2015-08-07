@@ -173,6 +173,7 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+
 L<WWW::PIDS::ScheduledTime>
 
 =head1 LICENSE AND COPYRIGHT

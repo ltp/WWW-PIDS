@@ -103,7 +103,9 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+
 L<WWW::PIDS::RouteChange>
+
 L<WWW::PIDS::StopChange>
 
 =head1 LICENSE AND COPYRIGHT

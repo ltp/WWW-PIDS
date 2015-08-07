@@ -111,7 +111,9 @@ L<http://search.cpan.org/dist/WWW-PIDS/>
 =head1 SEE ALSO
 
 L<WWW::PIDS>
+
 L<WWW::PIDS::StopChange>
+
 L<WWW::PIDS::CoreDataChanges>
 
 =head1 LICENSE AND COPYRIGHT
