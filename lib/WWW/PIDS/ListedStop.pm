@@ -10,8 +10,12 @@ our @OATTR= qw(TurnType TurnMessage);
 {
 	no strict 'refs';
 
-	*$_ = sub { return shift->{ $_ } } for ( @ATTR, @OATTR );
-	
+	for my $attr ( @ATTR, @OATTR ) {
+		*{ __PACKAGE__ . "::$attr" } = sub {
+			my $self = shift;
+			return $self->{ $attr }
+		}
+	}
 }
 
 sub new {
