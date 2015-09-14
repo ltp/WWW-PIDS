@@ -16,7 +16,7 @@ WriteMakefile(
     },
     BUILD_REQUIRES => {
         'Test::More' => 0,
-        'SOAP::Lite' => 1.09,
+        'SOAP::Lite' => 0,
     },
     PREREQ_PM => {
         #'ABC'              => 1.6,
