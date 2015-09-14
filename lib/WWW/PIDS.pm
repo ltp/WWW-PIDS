@@ -20,7 +20,7 @@ use WWW::PIDS::StopChange;
 use WWW::PIDS::StopInformation;
 use WWW::PIDS::TripSchedule;
 
-our $VERSION	= '0.02';
+our $VERSION	= '0.03';
 our %ATTR	= (
 			ClientGuid		=> undef,
 			ClientType		=> 'WEBPID',
