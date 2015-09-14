@@ -287,8 +287,38 @@ L<http://ws.tramtracker.com.au/pidsservice/pids.asmx>.
       |__ Bridport St
       |__ Montague St
 
+    # And then we can add the next three predicted arrival times for each stop with:
+    for my $route ( @routes ) { 
+      printf( "%s\n| %-3s | %-71s|\n%s\n",
+            ('+-----+' . ('-'x72).'+'),     # Ugly ascii "table"
+            $route->RouteNo,
+            $route->Description,
+            ('+-----+' . ('-'x72).'+') );
+    
+      my @stops = $p->GetListOfStopsByRouteNoAndDirection( routeNo => $route->RouteNo, isUpDirection => 0); 
+    
+      for my $stop ( @stops ) { 
+        my @times = map { 
+                          ( my $t = $_->PredictedArrivalDateTime ) =~ s/(^.*)T(.*)\+10:00/$2 $1/; $t
+                    } $p->GetNextPredictedRoutesCollection( stopNo => $stop->TID, routeNo => $route->RouteNo, lowFloor => 0 );
+        printf( "  |__ %-30s (%4s) - %s\n", $stop->Description, $stop->TID, ( join " - ", @times ) )
+      }
+    
+      print "\n";
+    }
 
-    ...
+    # Produces something like:
+    +-----+------------------------------------------------------------------------+
+    | 1   | East Coburg - South Melbourne Beach                                    |
+    +-----+------------------------------------------------------------------------+
+      |__ Beaconsfield Pde               ( 1242) - 16:16:00 2015-09-14 - 16:25:00 2015-09-14 - 16:33:00 2015-09-14
+      |__ Little Page St                 ( 1241) - 16:17:00 2015-09-14 - 16:26:00 2015-09-14 - 16:34:00 2015-09-14
+      |__ Richardson St                  ( 1240) - 16:17:00 2015-09-14 - 16:26:00 2015-09-14 - 16:34:00 2015-09-14
+      |__ Cardigan St                    ( 1239) - 16:18:00 2015-09-14 - 16:27:00 2015-09-14 - 16:35:00 2015-09-14
+      |__ Bridport St                    ( 1238) - 16:19:00 2015-09-14 - 16:28:00 2015-09-14 - 16:36:00 2015-09-14
+      |__ Montague St                    ( 1237) - 16:20:00 2015-09-14 - 16:29:00 2015-09-14 - 16:37:00 2015-09-14
+
+    # ... and many other helpful methods inside ;)
 
 This Perl API aims to implement a one-to-one binding with the methods provided
 by the web service.  Accordingly, the method names within this package are
