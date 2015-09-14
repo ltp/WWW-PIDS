@@ -9,8 +9,13 @@ UpDestination);
 
 {
         no strict 'refs';
-    
-        *$_ = sub { return shift->{ $_ } } for ( @ATTR );
+
+	for my $attr ( @ATTR ) {
+		*{ __PACKAGE__ . "::$attr" } = sub {
+			my $self = shift;
+			return $self->{ $attr }
+		}
+	}
 }
 
 sub new {
