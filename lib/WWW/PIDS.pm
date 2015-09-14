@@ -78,8 +78,20 @@ our %METHODS = (
 		parameters	=> [ { param => 'stopNo',	format => qr/^\d{4}$/,		type => 'short' },
 				     { param => 'routeNo',	format => qr/^\d{1,3}[a-z]?$/,	type => 'string' },
 				     { param => 'lowFloor',	format => qr/^(0|1)$/,		type => 'boolean' } ],
-		result		=> sub { return map { WWW::PIDS::ScheduledTime->new( $_ ) } 
-						@{ shift->{diffgram}->{DocumentElement}->{ToReturn} } 
+		result          => sub {	my $n = shift;
+						# Ugh...
+						return ( exists $n->{diffgram}					&&
+							 defined $n->{diffgram}					&&
+							 $n->{diffgram} ne ''					&&
+							 exists $n->{diffgram}->{DocumentElement}		&&
+							 defined $n->{diffgram}->{DocumentElement}		&&
+							 $n->{diffgram}->{DocumentElement} ne ''		&&
+							 exists $n->{diffgram}->{DocumentElement}->{ToReturn}	&&
+							 defined $n->{diffgram}->{DocumentElement}->{ToReturn}	&&
+							 $n->{diffgram}->{DocumentElement}->{ToReturn}ne '' )
+							? map { WWW::PIDS::ScheduledTime->new( $_ ) }
+							  @{ $n->{diffgram}->{DocumentElement}->{ToReturn} }
+							: ()
 					}
 	},
 	GetNewClientGuid  => {
@@ -233,6 +245,51 @@ as stops and routes information.">.
 You can find more information on the tramTRACKER PIDS web service here
 L<http://ws.tramtracker.com.au/pidsservice/pids.asmx>.
 
+    use WWW::PIDS;
+
+    my $p = WWW::PIDS->new();
+
+    # Get a list of route summaries as WWW::PIDS::RouteSummary objects
+    my @routes = $p->GetRouteSummaries();
+
+    # Print all route numbers and descriptions
+    for my $route ( @routes ) {
+      printf( "%-3s : %s\n", $route->RouteNo, $route->Description )
+    }
+
+    # Tweaking our recipe above; let's display an in-oder list of the
+    # stop names for each route and add pretty up our output.
+    for my $route ( @routes ) { 
+      printf( "%s\n| %-3s | %-71s|\n%s\n",
+            ('+-----+' . ('-'x72).'+'),     # Ugly ascii "table"
+            $route->RouteNo,
+            $route->Description,
+            ('+-----+' . ('-'x72).'+') );
+    
+      my @stops = $p->GetListOfStopsByRouteNoAndDirection( 
+				routeNo => $route->RouteNo, 
+				isUpDirection => 0
+		  ); 
+    
+      for my $stop ( @stops ) { 
+        printf( "  |__ %s\n", $stop->Description )
+      }
+    }
+
+    # Produces a route stop listing like:
+    +------------------------------------------------------------------------------+
+    | 1   | East Coburg - South Melbourne Beach                                    |
+    +------------------------------------------------------------------------------+
+      |__ Beaconsfield Pde
+      |__ Little Page St
+      |__ Richardson St
+      |__ Cardigan St
+      |__ Bridport St
+      |__ Montague St
+
+
+    ...
+
 This Perl API aims to implement a one-to-one binding with the methods provided
 by the web service.  Accordingly, the method names within this package are
 named after the corresponding names of the methods exposed via the web service.
@@ -240,11 +297,8 @@ Unfortunately, this results in some exceedingly long camel-cased method names -
 those wanting more aesthetically named methods and slightly more usable syntax
 may prefer the WWW::PIDS::Sugar package.
 
-    use WWW::PIDS;
-
-    my $p = WWW::PIDS->new();
-
-    ...
+Please see the L<NOTES> section regarding the terminology, convention, and
+specifities of this module including naming of parameters.
 
 =head1 METHODS
 
@@ -314,9 +368,6 @@ according to the service specification.
 
 Returns an array of L<WWW::PIDS::ListedStop> objects representing an in-order
 list of the stops on the route in the direction of travel.
-
-Please see the L<NOTES> section regarding the terminology, convention, and
-specifities of this module including naming of parameters.
 
 =head2 GetMainRoutes ()
 
